@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MatchesCellModel.h"
 
 @interface MatchesTableViewCell : UITableViewCell
+
+- (void)setCellWithModel:(MatchesCellModel *)model;
 
 @end

@@ -7,8 +7,18 @@
 //
 
 #import "IntrosTableViewController.h"
+#import "IntrosTableViewCell.h"
+#import "IntrosCellModel.h"
+#import "SADataManager.h"
+#import "UILabel+UILabel___Height.h"
+
+NSInteger const kSAStartingOffsetIntros = 0;
+NSInteger const kSAStepOffsetIntros = 20;
 
 @interface IntrosTableViewController ()
+
+@property   (nonatomic, strong) NSMutableArray *shops;
+@property   (nonatomic) NSInteger curentOffset;
 
 @end
 
@@ -16,40 +26,64 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.shops = [[NSMutableArray alloc] init];
+    [[SADataManager sharedManager] downloadShopCollectionsForIntrosWithStart:kSAStartingOffsetIntros withEnd:kSAStepOffsetIntros WithCompletion:^(id obj, NSError *err) {
+            self.shops = obj;
+        [self.tableView reloadData];
+        self.curentOffset += kSAStepOffsetIntros;
+    }];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
+
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+    return self.shops.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+    return 1;
 }
 
-/*
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+
+    IntrosTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"introsCell" forIndexPath:indexPath];
     
-    // Configure the cell...
+    
+    [cell setCellWithModel: [self.shops objectAtIndex:indexPath.section]];
+    
+    if (indexPath.section >= self.shops.count - 1) {
+        [[SADataManager sharedManager] downloadShopCollectionsForIntrosWithStart:self.curentOffset withEnd:self.curentOffset + kSAStepOffsetIntros WithCompletion:^(id obj, NSError *err) {
+            for (id item in obj) {
+                [self.shops addObject:item];
+            }
+            [self.tableView reloadData];
+            self.curentOffset += kSAStepOffsetIntros;
+        }];
+    }
+    
     
     return cell;
 }
-*/
+
+
+#pragma mark <Table View delegate>
+
+- (CGSize)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath*)indexPath {
+    NSString *text1 = [[[[self.shops objectAtIndex:indexPath.section]products] objectAtIndex:indexPath.row] realName];
+    CGFloat height1 = [UILabel heightForText:text1 withViewWidth:self.view.frame.size.width/2 textFont:[UIFont fontWithName:@"Avenir Heavy" size:12]];
+    
+    NSString *text2 = [[[[self.shops objectAtIndex:indexPath.section]products] objectAtIndex:indexPath.row] descriptions];
+    CGFloat height2 = [UILabel heightForText:text2 withViewWidth:self.view.frame.size.width/2 textFont:[UIFont fontWithName:@"Avenir Medium" size:13]];
+    
+    CGFloat height = self.view.frame.size.width/2 + height1*2 + height2*1.2 ;
+    
+    return CGSizeMake(self.view.frame.size.width/2, height);
+}
 
 /*
 // Override to support conditional editing of the table view.

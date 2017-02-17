@@ -7,7 +7,10 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "IntrosCellModel.h"
 
 @interface IntrosTableViewCell : UITableViewCell
+
+- (void)setCellWithModel:(IntrosCellModel *)model;
 
 @end

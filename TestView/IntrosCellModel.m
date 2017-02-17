@@ -10,4 +10,50 @@
 
 @implementation IntrosCellModel
 
++(EKObjectMapping *)objectMapping
+{
+    return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
+        [mapping mapPropertiesFromDictionary:@{
+                                               @"shopPicture" : @"shopPicture",
+                                               @"followed" : @"followed",
+                                               }];
+        
+        [mapping hasMany:[ProductsIntros class] forKeyPath:@"products"];
+        [mapping hasOne:[ShopInfoIntros class] forKeyPath:@"SellersInfo"];
+    }];
+}
+
+@end
+
+
+@implementation ProductsIntros
+
++(EKObjectMapping *)objectMapping
+{
+    return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
+        [mapping mapPropertiesFromDictionary:@{
+                                               @"description" : @"descriptions",
+                                               @"image" : @"prodImage",
+                                               @"is_liked" : @"is_liked",
+                                               @"realName" : @"realName",
+                                               @"LikedCount" : @"LikedCount",
+                                               }];
+    }];
+}
+
+@end
+
+
+@implementation ShopInfoIntros
+
++(EKObjectMapping *)objectMapping
+{
+    return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
+        [mapping mapPropertiesFromDictionary:@{
+                                               @"realName" : @"realName",
+                                               @"country" : @"country"
+                                               }];
+    }];
+}
+
 @end

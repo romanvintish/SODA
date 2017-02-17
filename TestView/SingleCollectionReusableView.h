@@ -10,4 +10,6 @@
 
 @interface SingleCollectionReusableView : UICollectionReusableView
 
+@property (nonatomic, weak) IBOutlet UILabel *shopNameLabel;
+
 @end

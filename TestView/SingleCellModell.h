@@ -7,7 +7,30 @@
 //
 
 #import <Foundation/Foundation.h>
+#import <EasyMapping.h>
 
-@interface SingleCellModell : NSObject
+
+
+@interface Products : NSObject <EKMappingProtocol>
+
+@property (nonatomic, copy) NSString* descriptions;
+@property (nonatomic, copy) NSString* image;
+@property (nonatomic) BOOL is_liked;
+@property (nonatomic, strong) NSString* realName;
+
+@end
+
+
+@interface ShopInfo : NSObject <EKMappingProtocol>
+
+@property (nonatomic, copy) NSString* realName;
+
+@end
+
+
+@interface SingleCellModell : NSObject <EKMappingProtocol>
+
+@property (nonatomic, strong) NSArray *products;
+@property (nonatomic, strong) ShopInfo* SellersInfo;
 
 @end

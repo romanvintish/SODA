@@ -10,4 +10,41 @@
 
 @implementation SingleCellModell
 
++(EKObjectMapping *)objectMapping
+{
+    return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
+        [mapping hasMany:[Products class] forKeyPath:@"products"];
+        [mapping hasOne:[ShopInfo class] forKeyPath:@"SellersInfo"];
+    }];
+}
+
+@end
+
+
+@implementation Products
+
++(EKObjectMapping *)objectMapping
+{
+    return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
+        [mapping mapPropertiesFromDictionary:@{
+                                               @"description" : @"descriptions",
+                                               @"image" : @"image",
+                                               @"is_liked" : @"is_liked",
+                                               }];
+    }];
+}
+
+@end
+
+@implementation ShopInfo
+
++(EKObjectMapping *)objectMapping
+{
+    return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
+        [mapping mapPropertiesFromDictionary:@{
+                                               @"realName" : @"realName",
+                                               }];
+    }];
+}
+
 @end

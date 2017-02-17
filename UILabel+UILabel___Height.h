@@ -10,4 +10,6 @@
 
 @interface UILabel (UILabel___Height)
 
++ (CGFloat)heightForText:(NSString*)text withViewWidth:(CGFloat)viewWidth textFont:(UIFont *)textFont;
+
 @end
