@@ -14,7 +14,6 @@
 @property (nonatomic, copy) NSString* realName;
 @property (nonatomic, copy) NSString* country;
 
-
 @end
 
 @interface ProductsIntros : NSObject <EKMappingProtocol>

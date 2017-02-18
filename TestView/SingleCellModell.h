@@ -9,8 +9,6 @@
 #import <Foundation/Foundation.h>
 #import <EasyMapping.h>
 
-
-
 @interface Products : NSObject <EKMappingProtocol>
 
 @property (nonatomic, copy) NSString* descriptions;

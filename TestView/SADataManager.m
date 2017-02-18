@@ -23,7 +23,8 @@ NSString *const kSAUserID = @"2233855952";
 
 @implementation SADataManager
 
-+ (SADataManager *)sharedManager {
++ (SADataManager *)sharedManager
+{
     static SADataManager *dataManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -34,7 +35,8 @@ NSString *const kSAUserID = @"2233855952";
     return dataManager;
 }
 
-- (id)init {
+- (id)init
+{
     self = [super init];
     if (self) {
         self.dataSource = [[SADataSource alloc] init];
@@ -46,30 +48,37 @@ NSString *const kSAUserID = @"2233855952";
     return self;
 }
 
-- (BOOL)internetWasDetected {
+- (BOOL)internetWasDetected
+{
     return self.connectionDetected;
 }
 
+
 #pragma mark - <SAInternetChangeStatusDelegate>
 
-- (void)internetHasBeenConnected {
+
+- (void)internetHasBeenConnected
+{
     //[self loginCompletionBloc:nil failBlock:nil];
     //[self fetchAvailableProducts];
     self.connectionDetected = YES;
 }
 
-- (void)internetWasInterrupted {
+- (void)internetWasInterrupted
+{
     self.connectionDetected = YES;
     [self.requestManager serverHasErrorWithType:SAInternetErrorTypeLostConnection];
 }
 
-- (void)downloadShopCollectionsWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block{
+- (void)downloadShopCollectionsWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block
+{
         [self.requestManager fetchShopsWithID:kSAUserID withStart:start withEnd:end withCompletion:^(id obj, NSError *err) {
             block(obj,err);
             }];
 }
 
-- (void)downloadShopCollectionsForIntrosWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block{
+- (void)downloadShopCollectionsForIntrosWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block
+{
     [self.requestManager fetchShopsForIntrosWithID:kSAUserID withStart:start withEnd:end withCompletion:^(id obj, NSError *err) {
         block(obj,err);
     }];

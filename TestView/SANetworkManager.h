@@ -8,19 +8,22 @@
 
 #import <Foundation/Foundation.h>
 
-typedef NS_OPTIONS(NSUInteger, SAInternetErrorType) {
+typedef NS_OPTIONS(NSUInteger, SAInternetErrorType)
+{
     SAInternetErrorTypeNotError = 0,
     SAInternetErrorTypeLostConnection = 1,
     SAInternetErrorTypeServerError,
     SAInternetErrorTypeEmptyData
 };
 
-typedef NS_OPTIONS(NSUInteger, SAInternetConnectionStatus) {
+typedef NS_OPTIONS(NSUInteger, SAInternetConnectionStatus)
+{
     SAInternetConnectionStatusNotConnection = 1,
     SAInternetConnectionStatusConnectionWifi,
     SAInternetConnectionStatusConnectionWWAN,
     SAInternetConnectionStatusConnectionUnkown
 };
+
 
 @protocol SAInternetChangeStatusDelegate <NSObject>
 
@@ -28,6 +31,7 @@ typedef NS_OPTIONS(NSUInteger, SAInternetConnectionStatus) {
 - (void)internetWasInterrupted;
 
 @end
+
 
 @interface SANetworkManager : NSObject
 
@@ -42,9 +46,7 @@ typedef NS_OPTIONS(NSUInteger, SAInternetConnectionStatus) {
 #pragma mark - GET data
 
 - (void)fetchShopsWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block;
-
 - (void)fetchShopsForIntrosWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block;
-
 
 #pragma mark - POST requests
 

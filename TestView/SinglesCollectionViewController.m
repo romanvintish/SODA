@@ -24,36 +24,45 @@ NSInteger const kSAStepOffset = 20;
 
 @implementation SinglesCollectionViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.shops = [[NSMutableArray alloc] init];
     self.automaticallyAdjustsScrollViewInsets = NO;
+    
     [[SADataManager sharedManager] downloadShopCollectionsWithStart:kSAStartingOffset withEnd:kSAStepOffset WithCompletion:^(id obj, NSError *err) {
         for (id item in obj) {
             SingleCellModell *model = item;
             [self.shops addObject:model];
         }
+        
         [self.collectionView reloadData];
         self.curentOffset += kSAStepOffset;
     }];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
+
 #pragma mark <UICollectionViewDataSource>
 
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
+{
     return self.shops.count;
 }
 
 
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
+{
     return [[[self.shops objectAtIndex:section] products] count];
 }
 
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
+{
      SingleCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:@"SinglesCollectionViewCell" forIndexPath:indexPath];
     
     if(fmodf(indexPath.row, 2) != 0){
@@ -71,18 +80,21 @@ NSInteger const kSAStepOffset = 20;
                  SingleCellModell *model = item;
                  [self.shops addObject:model];
              }
+             
              [self.collectionView reloadData];
              self.curentOffset += kSAStepOffset;
      }];
-     }
-    
+    }
     
     return cell;
 }
 
+
 #pragma mark <UICollectionViewDelegate>
 
-- (CGSize)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath*)indexPath {
+
+- (CGSize)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath*)indexPath
+{
     NSString *text1 = [[[[self.shops objectAtIndex:indexPath.section]products] objectAtIndex:indexPath.row] realName];
     CGFloat height1 = [UILabel heightForText:text1 withViewWidth:self.view.frame.size.width/2 textFont:[UIFont fontWithName:@"Avenir Heavy" size:12]];
     
@@ -111,35 +123,6 @@ NSInteger const kSAStepOffset = 20;
     
     return reusableview;
 }
-
-/*
-// Uncomment this method to specify if the specified item should be highlighted during tracking
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
-}
-*/
-
-/*
-// Uncomment this method to specify if the specified item should be selected
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
-    return YES;
-}
-*/
-
-/*
-// Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-- (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
-}
-
-- (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
-}
-
-- (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
-}
-*/
 
 @end
 

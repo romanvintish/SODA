@@ -48,7 +48,6 @@
                                        animated:NO
                                      completion:nil];
     
-    
     self.pageViewController.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y, self.pageView.frame.size.width, self.pageView.frame.size.height);
     
     [self addChildViewController:self.pageViewController];
@@ -56,11 +55,14 @@
     [self.pageViewController didMoveToParentViewController:self];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
-#pragma mark - IBActions
+
+#pragma mark - Actions
+
 
 - (IBAction)singlesTaped:(id)sender
 {
@@ -76,6 +78,7 @@
     else{
         direction = UIPageViewControllerNavigationDirectionForward;
     }
+    
     self.curentPageIndex = index;
     [self.pageViewController setViewControllers:@[contentViewController]
                                       direction:direction
@@ -97,6 +100,7 @@
     else{
         direction = UIPageViewControllerNavigationDirectionForward;
     }
+    
     self.curentPageIndex = index;
     [self.pageViewController setViewControllers:@[contentViewController]
                                       direction:direction
@@ -118,6 +122,7 @@
     else{
         direction = UIPageViewControllerNavigationDirectionForward;
     }
+    
     self.curentPageIndex = index;
     [self.pageViewController setViewControllers:@[contentViewController]
                                       direction:direction
@@ -163,7 +168,9 @@
     [UIView commitAnimations];
 }
 
+
 #pragma mark - Page View Controller Data Source
+
 
 - (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
 {
@@ -187,7 +194,9 @@
     return [self.myViewControllers objectAtIndex:self.curentPageIndex + 1];
 }
 
+
 #pragma mark - Page View Controller Delegate
+
 
 - (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed
 {

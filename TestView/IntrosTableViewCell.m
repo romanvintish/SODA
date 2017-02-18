@@ -27,19 +27,22 @@
 
 @implementation IntrosTableViewCell
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
-    // Initialization code
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
-
 }
+
 
 #pragma mark - Setting
 
-- (void)setCellWithModel:(IntrosCellModel *)model {
+
+- (void)setCellWithModel:(IntrosCellModel *)model
+{
     [self addAttributeToLabels];
     [self addGestureRecognizer];
     
@@ -48,6 +51,7 @@
     self.friendNameLabel.text = [[model.products lastObject] descriptions];
     self.messageTextLabel.text = model.SellersInfo.country;
     self.userNameLabel.text = model.SellersInfo.realName;
+    
     [self.userPhoto sd_setImageWithURL:[NSURL URLWithString: model.shopPicture] placeholderImage:nil];
     [self.friendPhoto sd_setImageWithURL:[NSURL URLWithString: [[model.products lastObject] prodImage]] placeholderImage:nil];
     
@@ -56,7 +60,8 @@
     }
 }
 
--(void)addAttributeToLabels{
+-(void)addAttributeToLabels
+{
     NSAttributedString *nameAttributedString = [[NSAttributedString alloc] initWithString:self.userNameLabel.text
                                                                                attributes:@{
                                                                                             NSKernAttributeName : @(2.0f)
@@ -70,44 +75,42 @@
     self.friendNameLabel.attributedText = askAttributedString;
 }
 
--(void)addGestureRecognizer{
+-(void)addGestureRecognizer
+{
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
                                              initWithTarget:self action:@selector(userPhotoTouched:)];
     [tapRecognizer setNumberOfTouchesRequired:1];
-    //[tapRecognizer setDelegate:self];
     self.touchedUserPhoto.userInteractionEnabled = YES;
     [self.touchedUserPhoto addGestureRecognizer:tapRecognizer];
     
     UITapGestureRecognizer *tapRecognizer2 = [[UITapGestureRecognizer alloc]
                                               initWithTarget:self action:@selector(friendPhotoTouched:)];
     [tapRecognizer setNumberOfTouchesRequired:1];
-    //[tapRecognizer setDelegate:self];
     self.touchedFriendPhoto.userInteractionEnabled = YES;
     [self.touchedFriendPhoto addGestureRecognizer:tapRecognizer2];
     
     UITapGestureRecognizer *tapRecognizer3 = [[UITapGestureRecognizer alloc]
                                               initWithTarget:self action:@selector(userNameLabelTouched:)];
     [tapRecognizer setNumberOfTouchesRequired:1];
-    //[tapRecognizer setDelegate:self];
     self.userNameLabel.userInteractionEnabled = YES;
     [self.userNameLabel addGestureRecognizer:tapRecognizer3];
     
     UITapGestureRecognizer *tapRecognizer4 = [[UITapGestureRecognizer alloc]
                                               initWithTarget:self action:@selector(friendNameLabelTouched:)];
     [tapRecognizer setNumberOfTouchesRequired:1];
-    //[tapRecognizer setDelegate:self];
     self.friendNameLabel.userInteractionEnabled = YES;
     [self.friendNameLabel addGestureRecognizer:tapRecognizer4];
     
     UITapGestureRecognizer *tapRecognizer5 = [[UITapGestureRecognizer alloc]
                                               initWithTarget:self action:@selector(messageTextLabelTouched:)];
     [tapRecognizer setNumberOfTouchesRequired:1];
-    //[tapRecognizer setDelegate:self];
     self.messageTextLabel.userInteractionEnabled = YES;
     [self.messageTextLabel addGestureRecognizer:tapRecognizer5];
 }
 
+
 #pragma mark - Action
+
 
 -(void)userPhotoTouched:(id) sender
 {
@@ -134,7 +137,8 @@
     return;
 }
 
-- (IBAction)likeProfile:(id)sender {
+- (IBAction)likeProfile:(id)sender
+{
     [self.likeButton setImage:[UIImage imageNamed:@"FullLike.png"] forState:UIControlStateNormal];
 }
 

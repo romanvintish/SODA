@@ -20,7 +20,8 @@
 
 @implementation FeedbackViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(moveUp:)
@@ -28,21 +29,26 @@
                                                object:nil];
 }
 
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [self.textField becomeFirstResponder];
 }
 
--(BOOL)canBecomeFirstResponder{
+-(BOOL)canBecomeFirstResponder
+{
     return YES;
 }
 
-- (IBAction)touchTextField:(id)sender {
+- (IBAction)touchTextField:(id)sender
+{
 }
 
-- (IBAction)add:(id)sender {
+- (IBAction)add:(id)sender
+{
 }
 
-- (IBAction)send:(id)sender {
+- (IBAction)send:(id)sender
+{
 }
 
 - (void)moveUp:(NSNotification*)notification
@@ -60,11 +66,13 @@
     [UIView commitAnimations];
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
--(void)dealloc{
+-(void)dealloc
+{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 

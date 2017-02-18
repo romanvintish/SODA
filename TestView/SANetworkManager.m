@@ -18,13 +18,15 @@ NSString *const kSARequestObserverKeyErrorStatus = @"serverError";
 NSString *const kSARequestObserverParamKeyOld = @"old";
 NSString *const kSARequestObserverParamKeyNew = @"new";
 
-typedef enum NSString {
+typedef enum NSString
+{
     kSARequestTypePost,
     kSARequestTypeGET,
     kSARequestTypeDELETE
 } kSARequestType;
 
-NSString * const kSARequestTypeToString[] = {
+NSString * const kSARequestTypeToString[] =
+{
     [kSARequestTypePost] = @"POST",
     [kSARequestTypeGET] = @"GET",
     [kSARequestTypeDELETE] = @"DELETE",
@@ -42,19 +44,22 @@ NSString * const kSARequestTypeToString[] = {
 
 @implementation SANetworkManager
 
-- (void)dealloc {
+- (void)dealloc
+{
     [self removeObserver:self forKeyPath:kSARequestObserverKeyConnectionStatus];
     [self removeObserver:self forKeyPath:kSARequestObserverKeyErrorStatus];
 }
 
-- (instancetype)initWithDelegate:(id<SAInternetChangeStatusDelegate>)delegate {
+- (instancetype)initWithDelegate:(id<SAInternetChangeStatusDelegate>)delegate
+{
     if (self = [self init]) {
         self.delegate = delegate;
     }
     return self;
 }
 
-- (instancetype)init {
+- (instancetype)init
+{
     if (self = [super init]) {
         self.serverError = SAInternetErrorTypeNotError;
         self.connectionStatus = SAInternetConnectionStatusConnectionUnkown;
@@ -67,12 +72,14 @@ NSString * const kSARequestTypeToString[] = {
     return self;
 }
 
-- (void)setObservers {
+- (void)setObservers
+{
     [self addObserver:self forKeyPath:kSARequestObserverKeyConnectionStatus options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
     [self addObserver:self forKeyPath:kSARequestObserverKeyErrorStatus options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
 }
 
-- (void)checkConnected {
+- (void)checkConnected
+{
     self.connectionStatus = [self connectionStatus];
     [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
         switch (status) {
@@ -96,7 +103,8 @@ NSString * const kSARequestTypeToString[] = {
     }];
 }
 
-- (void)observeValueForKeyPath:(nullable NSString *)keyPath ofObject:(nullable id)object change:(nullable NSDictionary<NSKeyValueChangeKey, id> *)change context:(nullable void *)context {
+- (void)observeValueForKeyPath:(nullable NSString *)keyPath ofObject:(nullable id)object change:(nullable NSDictionary<NSKeyValueChangeKey, id> *)change context:(nullable void *)context
+{
     if ([keyPath isEqualToString:kSARequestObserverKeyConnectionStatus]) {
         if ([[change objectForKey:kSARequestObserverParamKeyOld] integerValue] == SAInternetConnectionStatusNotConnection ||
             [[change objectForKey:kSARequestObserverParamKeyOld] integerValue] == SAInternetConnectionStatusConnectionUnkown) {
@@ -120,7 +128,8 @@ NSString * const kSARequestTypeToString[] = {
     }
 }
 
-- (void)serverHasErrorWithType:(SAInternetErrorType)type {
+- (void)serverHasErrorWithType:(SAInternetErrorType)type
+{
     NSString *title = @"Error";
     NSString *message;
     
@@ -134,7 +143,8 @@ NSString * const kSARequestTypeToString[] = {
     self.serverError = SAInternetErrorTypeNotError;
 }
 
-- (BOOL)networkConnected {
+- (BOOL)networkConnected
+{
     [self checkConnected];
     if (self.connectionStatus == SAInternetConnectionStatusConnectionWifi ||
         self.connectionStatus == SAInternetConnectionStatusConnectionWWAN) {
@@ -146,11 +156,10 @@ NSString * const kSARequestTypeToString[] = {
 #pragma mark - DELETE
 #pragma mark - GET
 
-- (void)fetchShopsWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block{
-    
+- (void)fetchShopsWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block
+{
     NSString *urlSearchWithName = [NSString stringWithFormat:@"%@/user/%@/data/activityFeed&minId=%ld&maxId=%ld",kSABaseURL,userId, (long)start ,(long)end];
 
-    
     [self.manager GET:urlSearchWithName
       parameters:nil
         progress:nil
@@ -172,10 +181,9 @@ NSString * const kSARequestTypeToString[] = {
     }];
 }
 
-- (void)fetchShopsForIntrosWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block{
-    
+- (void)fetchShopsForIntrosWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block
+{
     NSString *urlSearchWithName = [NSString stringWithFormat:@"%@/user/%@/data/activityFeed&minId=%ld&maxId=%ld",kSABaseURL,userId, (long)start ,(long)end];
-    
     
     [self.manager GET:urlSearchWithName
            parameters:nil

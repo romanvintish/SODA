@@ -24,23 +24,28 @@
 
 @implementation MatchesTableViewCell
 
-- (void)awakeFromNib {
+- (void)awakeFromNib
+{
     [super awakeFromNib];
-    // Initialization code
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated
+{
     [super setSelected:selected animated:animated];
 }
 
+
 #pragma mark - Setting
 
-- (void)setCellWithModel:(MatchesCellModel *)model {
+
+- (void)setCellWithModel:(MatchesCellModel *)model
+{
     [self addAttributeToLabels];
     [self addGestureRecognizer];
 }
 
--(void)addAttributeToLabels{
+-(void)addAttributeToLabels
+{
     NSAttributedString *nameAttributedString = [[NSAttributedString alloc] initWithString:self.userNameLabel.text
                                                                                attributes:@{
                                                                                             NSKernAttributeName : @(2.0f)
@@ -48,7 +53,8 @@
     self.userNameLabel.attributedText = nameAttributedString;
 }
 
--(void)addGestureRecognizer{
+-(void)addGestureRecognizer
+{
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
                                              initWithTarget:self
                                              action:@selector(userPhotoTouched:)];
@@ -85,7 +91,9 @@
     [self.massageLabel addGestureRecognizer:tapRecognizer5];
 }
 
+
 #pragma mark - Action
+
 
 -(void)userPhotoTouched:(id) sender
 {

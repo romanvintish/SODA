@@ -23,21 +23,33 @@
 
 @implementation SingleCollectionViewCell
 
+
 #pragma mark - Setting
 
-- (void)setCellWithModel:(Products *)model {
+
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+}
+
+- (void)setCellWithModel:(Products *)model
+{
     [self addAttributeToLabels];
     [self addGestureRecognizer];
+    
     self.nameLabel.text = model.realName;
     self.askLabel.text = model.descriptions;
+    
     [self.photoImage sd_setImageWithURL:[NSURL URLWithString:model.image]
                  placeholderImage:nil];
+    
     if (model.is_liked) {
         [self.likeButton setImage:[UIImage imageNamed:@"FullLike.png"] forState:UIControlStateNormal];
     }
 }
 
--(void)addAttributeToLabels{
+-(void)addAttributeToLabels
+{
     NSAttributedString *nameAttributedString = [[NSAttributedString alloc] initWithString:self.nameLabel.text
                                                                                attributes:@{
                                                                                             NSKernAttributeName : @(2.0f)
@@ -51,7 +63,8 @@
     self.askLabel.attributedText = askAttributedString;
 }
 
--(void)addGestureRecognizer{
+-(void)addGestureRecognizer
+{
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
                                              initWithTarget:self
                                              action:@selector(photoImageTouched:)];
@@ -74,9 +87,12 @@
     [self.askLabel addGestureRecognizer:tapRecognizer3];
 }
 
+
 #pragma mark - Action
 
-- (IBAction)likeProfile:(id)sender {
+
+- (IBAction)likeProfile:(id)sender
+{
     [self.likeButton setImage:[UIImage imageNamed:@"FullLike.png"] forState:UIControlStateNormal];
 }
 
@@ -93,10 +109,6 @@
 -(void)askLabelTouched:(id) sender
 {
     return;
-}
-
-- (void)layoutSubviews {
-    [super layoutSubviews];
 }
 
 @end
