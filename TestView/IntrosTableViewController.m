@@ -80,16 +80,13 @@ NSInteger const kSAStepOffsetIntros = 20;
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    NSString *text1 = [[[[self.shops objectAtIndex:indexPath.section]products] objectAtIndex:indexPath.row] realName];
-    CGFloat height1 = [UILabel heightForText:text1 withViewWidth:self.view.frame.size.width textFont:[UIFont fontWithName:@"Avenir Heavy" size:12]];
+    CGFloat labelsWidth = self.view.frame.size.width*0.5294;
     
-    NSString *text2 = [[[[self.shops objectAtIndex:indexPath.section]products] objectAtIndex:indexPath.row] descriptions];
-    CGFloat height2 = [UILabel heightForText:text2 withViewWidth:self.view.frame.size.width textFont:[UIFont fontWithName:@"Avenir Heavy" size:13]];
+    NSString *text2 = [[[[self.shops objectAtIndex:indexPath.section] products] objectAtIndex:indexPath.row] descriptions];
+    CGFloat height2 = [UILabel heightForText:text2 withViewWidth:labelsWidth textFont:[UIFont fontWithName:@"Avenir Heavy" size:12]];
+
     
-    NSString *text3 = [[[self.shops objectAtIndex:indexPath.section] SellersInfo] country];
-    CGFloat height3 = [UILabel heightForText:text3 withViewWidth:self.view.frame.size.width textFont:[UIFont fontWithName:@"Avenir Heavy" size:13]];
-    
-    CGFloat height = self.view.frame.size.width/25 + height1*2 + 5 + height3*2 + 5 +height2*1.2 + self.view.frame.size.width/25;
+    CGFloat height = self.view.frame.size.width/25 + 5 + 20 + 5 + height2 + 5 + 20 + self.view.frame.size.width/25;
     
     return height;
 }

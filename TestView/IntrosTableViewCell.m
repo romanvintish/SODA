@@ -18,10 +18,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *friendPhoto;
 @property (strong, nonatomic) IBOutlet UIImageView *touchedFriendPhoto;
 @property (strong, nonatomic) IBOutlet UILabel *countMessageLabel;
-@property (strong, nonatomic) IBOutlet UILabel *dateLabel;
-@property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *friendNameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *messageTextLabel;
+@property (strong, nonatomic) IBOutlet UILabel *dateLabel;;
 
 @end
 
@@ -73,6 +70,10 @@
                                                                                            NSKernAttributeName : @(2.0f)
                                                                                            }];
     self.friendNameLabel.attributedText = askAttributedString;
+    
+    [self.userNameLabel setPreferredMaxLayoutWidth:194];
+    [self.friendNameLabel setPreferredMaxLayoutWidth:194];
+    [self.messageTextLabel setPreferredMaxLayoutWidth:194];
 }
 
 -(void)addGestureRecognizer

@@ -153,8 +153,6 @@
 			isa = PBXGroup;
 			children = (
 				CCD105E31E5707E4008EA9CA /* Category */,
-				CCA0F1EC1E5488840027FAE8 /* UIAlertController+WODWindow.h */,
-				CCA0F1ED1E5488840027FAE8 /* UIAlertController+WODWindow.m */,
 				CC1649AE1E4C663200494989 /* TestView */,
 				CC1649AD1E4C663200494989 /* Products */,
 				A4C3B3EA923A4957AF6736A9 /* Pods */,
@@ -313,6 +311,8 @@
 		CCD105E31E5707E4008EA9CA /* Category */ = {
 			isa = PBXGroup;
 			children = (
+				CCA0F1EC1E5488840027FAE8 /* UIAlertController+WODWindow.h */,
+				CCA0F1ED1E5488840027FAE8 /* UIAlertController+WODWindow.m */,
 				CCD105E41E57080C008EA9CA /* UILabel+UILabel___Height.h */,
 				CCD105E51E57080C008EA9CA /* UILabel+UILabel___Height.m */,
 			);

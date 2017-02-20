@@ -11,6 +11,10 @@
 
 @interface IntrosTableViewCell : UITableViewCell
 
+@property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *friendNameLabel;
+@property (strong, nonatomic) IBOutlet UILabel *messageTextLabel;
+
 - (void)setCellWithModel:(IntrosCellModel *)model;
 
 @end

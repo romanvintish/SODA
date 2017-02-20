@@ -14,7 +14,8 @@
     CGFloat offset = 1.0;
     NSMutableParagraphStyle *paragraph = [[NSMutableParagraphStyle alloc] init];
     [paragraph setLineBreakMode:NSLineBreakByWordWrapping];
-    NSDictionary* attributes = [NSDictionary dictionaryWithObjectsAndKeys:textFont , NSFontAttributeName, paragraph, NSParagraphStyleAttributeName, nil];
+    NSDictionary* attributes = [NSDictionary dictionaryWithObjectsAndKeys:textFont , NSFontAttributeName, paragraph, NSParagraphStyleAttributeName, @(2.0f), NSKernAttributeName, nil];
+    
     CGRect rect = [text boundingRectWithSize:CGSizeMake(viewWidth - 2 * offset, CGFLOAT_MAX)
                                      options:NSStringDrawingUsesLineFragmentOrigin
                                   attributes:attributes
