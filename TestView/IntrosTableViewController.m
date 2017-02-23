@@ -85,7 +85,6 @@ NSInteger const kSAStepOffsetIntros = 20;
     NSString *text2 = [[[[self.shops objectAtIndex:indexPath.section] products] objectAtIndex:indexPath.row] descriptions];
     CGFloat height2 = [UILabel heightForText:text2 withViewWidth:labelsWidth textFont:[UIFont fontWithName:@"Avenir Heavy" size:12]];
 
-    
     CGFloat height = self.view.frame.size.width/25 + 5 + 20 + 5 + height2 + 5 + 20 + self.view.frame.size.width/25;
     
     return height;
