@@ -7,6 +7,7 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "MapKit/MapKit.h"
 
 typedef NS_OPTIONS(NSUInteger, SAInternetErrorType)
 {
@@ -47,6 +48,8 @@ typedef NS_OPTIONS(NSUInteger, SAInternetConnectionStatus)
 
 - (void)fetchShopsWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block;
 - (void)fetchShopsForIntrosWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block;
+- (void)fetchNearlyShopsWithCordinate:(CLLocationCoordinate2D)coordinates andRadius:(CGFloat)radius withCompletion:(void (^)(id obj, NSError *err))block;
+- (void)getPassion:(void (^)(id obj, NSError *err))complitionBlock failure:(void (^)(void))failureBlock;
 
 #pragma mark - POST requests
 

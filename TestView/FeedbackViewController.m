@@ -15,6 +15,7 @@
 @property (strong, nonatomic) IBOutlet UIImageView *backgroundView;
 @property (strong, nonatomic) IBOutlet UIButton *sendButton;
 @property (strong, nonatomic) IBOutlet UIView *lastSpace;
+@property (nonatomic) CGPoint contentOffset;
 
 @end
 
@@ -27,6 +28,22 @@
                                              selector:@selector(moveUp:)
                                                  name:UIKeyboardDidShowNotification
                                                object:nil];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissKeyboard)];
+    
+    [self.view addGestureRecognizer:tap];
+}
+
+-(void)dismissKeyboard
+{
+    [self.textField resignFirstResponder];
+    
+    [UIView beginAnimations:nil context:nil];
+    [UIView setAnimationDuration:.3];
+    [UIView setAnimationBeginsFromCurrentState:TRUE];
+
+    [self.scrollView setContentOffset:self.contentOffset];
+    
+    [UIView commitAnimations];
 }
 
 -(void)viewWillAppear:(BOOL)animated
@@ -61,6 +78,7 @@
     CGFloat topOfKeyboard = keyboardFrame.size.height;
     CGFloat bottomOfLastSpace = (self.view.frame.size.height - self.lastSpace.frame.origin.y) - self.lastSpace.frame.size.height;
 
+    self.contentOffset = self.scrollView.contentOffset;
     [self.scrollView setContentOffset:CGPointMake(self.view.frame.origin.x, topOfKeyboard-bottomOfLastSpace) animated:YES];
 
     [UIView commitAnimations];

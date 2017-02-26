@@ -11,6 +11,7 @@
 #import "SinglesCollectionViewController.h"
 #import "IntrosTableViewController.h"
 #import "MatchesTableViewController.h"
+#import "SearchPopupViewController.h"
 
 @interface PeoplesViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
@@ -30,6 +31,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     
     SinglesCollectionViewController *singles = [self.storyboard instantiateViewControllerWithIdentifier:@"SinglesCollectionViewController"];
     IntrosTableViewController *intros = [self.storyboard instantiateViewControllerWithIdentifier:@"IntrosTableViewController"];
@@ -63,6 +65,9 @@
 
 #pragma mark - Actions
 
+- (IBAction)logoButtonTaped:(id)sender {
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"logoButtonTaped" object:self];
+}
 
 - (IBAction)singlesTaped:(id)sender
 {
@@ -84,6 +89,25 @@
                                       direction:direction
                                        animated:YES
                                      completion:nil];
+}
+
+- (IBAction)searchButtonTaped:(id)sender {
+    if (!UIAccessibilityIsReduceTransparencyEnabled()) {
+        self.view.backgroundColor = [UIColor clearColor];
+        
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
+        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        blurEffectView.frame = self.view.bounds;
+        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        
+        [self.view addSubview:blurEffectView];
+    }
+    
+    SearchPopupViewController *searchController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchController"];
+    searchController.providesPresentationContextTransitionStyle = YES;
+    searchController.definesPresentationContext = YES;
+    [searchController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
+    [self.navigationController presentViewController:searchController animated:YES completion:nil];
 }
 
 - (IBAction)introsTaped:(id)sender

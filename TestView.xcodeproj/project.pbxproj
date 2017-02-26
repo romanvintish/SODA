@@ -7,6 +7,16 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		CC1042D71E5EEE2500AA4420 /* SlideMenuViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1042D61E5EEE2500AA4420 /* SlideMenuViewController.m */; };
+		CC1042D91E5F00B100AA4420 /* SSD.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1042D81E5F00B100AA4420 /* SSD.png */; };
+		CC1042DB1E5F0A9800AA4420 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC1042DA1E5F0A9800AA4420 /* MapKit.framework */; };
+		CC1042DE1E5F0AC500AA4420 /* MapViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1042DD1E5F0AC500AA4420 /* MapViewController.m */; };
+		CC1042E11E5F187100AA4420 /* ShopOnMapModell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1042E01E5F187100AA4420 /* ShopOnMapModell.m */; };
+		CC1042E31E5F321900AA4420 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = CC1042E21E5F321900AA4420 /* CoreLocation.framework */; };
+		CC1042F01E604E4B00AA4420 /* vertical-shop.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1042EF1E604E4B00AA4420 /* vertical-shop.png */; };
+		CC1042F61E605FAF00AA4420 /* BurgerButton.png in Resources */ = {isa = PBXBuildFile; fileRef = CC1042F51E605FAF00AA4420 /* BurgerButton.png */; };
+		CC1042FA1E60687C00AA4420 /* SearchPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1042F91E60687C00AA4420 /* SearchPopupViewController.m */; };
+		CC1042FD1E60795700AA4420 /* SearchPassion.m in Sources */ = {isa = PBXBuildFile; fileRef = CC1042FC1E60795700AA4420 /* SearchPassion.m */; };
 		CC14DADC1E534AFD005B8B2E /* IntrosTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC14DADB1E534AFD005B8B2E /* IntrosTableViewCell.m */; };
 		CC14DADF1E534B12005B8B2E /* IntrosCellModel.m in Sources */ = {isa = PBXBuildFile; fileRef = CC14DADE1E534B12005B8B2E /* IntrosCellModel.m */; };
 		CC14DAE21E534F64005B8B2E /* SingleCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = CC14DAE11E534F64005B8B2E /* SingleCollectionViewCell.m */; };
@@ -50,7 +60,6 @@
 		CCA0F19C1E5466510027FAE8 /* SANetworkManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA0F19B1E5466510027FAE8 /* SANetworkManager.m */; };
 		CCA0F19F1E5466640027FAE8 /* SADataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA0F19E1E5466640027FAE8 /* SADataManager.m */; };
 		CCA0F1A21E5466770027FAE8 /* SADataSource.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA0F1A11E5466770027FAE8 /* SADataSource.m */; };
-		CCA0F1EE1E5488840027FAE8 /* UIAlertController+WODWindow.m in Sources */ = {isa = PBXBuildFile; fileRef = CCA0F1ED1E5488840027FAE8 /* UIAlertController+WODWindow.m */; };
 		CCD105E21E56FF18008EA9CA /* SingleCollectionReusableView.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD105E11E56FF18008EA9CA /* SingleCollectionReusableView.m */; };
 		CCD105E61E57080C008EA9CA /* UILabel+UILabel___Height.m in Sources */ = {isa = PBXBuildFile; fileRef = CCD105E51E57080C008EA9CA /* UILabel+UILabel___Height.m */; };
 		F80CC086BD04B2B057CC2904 /* libPods-TestView.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5837689D8A04EB4BE67B5396 /* libPods-TestView.a */; };
@@ -59,6 +68,21 @@
 /* Begin PBXFileReference section */
 		5837689D8A04EB4BE67B5396 /* libPods-TestView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TestView.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B48C67D383981754C3066C64 /* Pods-TestView.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TestView.debug.xcconfig"; path = "Pods/Target Support Files/Pods-TestView/Pods-TestView.debug.xcconfig"; sourceTree = "<group>"; };
+		CC1042D51E5EEE2500AA4420 /* SlideMenuViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SlideMenuViewController.h; sourceTree = "<group>"; };
+		CC1042D61E5EEE2500AA4420 /* SlideMenuViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SlideMenuViewController.m; sourceTree = "<group>"; };
+		CC1042D81E5F00B100AA4420 /* SSD.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SSD.png; sourceTree = "<group>"; };
+		CC1042DA1E5F0A9800AA4420 /* MapKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = MapKit.framework; path = System/Library/Frameworks/MapKit.framework; sourceTree = SDKROOT; };
+		CC1042DC1E5F0AC500AA4420 /* MapViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MapViewController.h; sourceTree = "<group>"; };
+		CC1042DD1E5F0AC500AA4420 /* MapViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MapViewController.m; sourceTree = "<group>"; };
+		CC1042DF1E5F187000AA4420 /* ShopOnMapModell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ShopOnMapModell.h; sourceTree = "<group>"; };
+		CC1042E01E5F187100AA4420 /* ShopOnMapModell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ShopOnMapModell.m; sourceTree = "<group>"; };
+		CC1042E21E5F321900AA4420 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
+		CC1042EF1E604E4B00AA4420 /* vertical-shop.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "vertical-shop.png"; sourceTree = "<group>"; };
+		CC1042F51E605FAF00AA4420 /* BurgerButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BurgerButton.png; sourceTree = "<group>"; };
+		CC1042F81E60687C00AA4420 /* SearchPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchPopupViewController.h; sourceTree = "<group>"; };
+		CC1042F91E60687C00AA4420 /* SearchPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchPopupViewController.m; sourceTree = "<group>"; };
+		CC1042FB1E60795700AA4420 /* SearchPassion.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchPassion.h; sourceTree = "<group>"; };
+		CC1042FC1E60795700AA4420 /* SearchPassion.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchPassion.m; sourceTree = "<group>"; };
 		CC14DADA1E534AFD005B8B2E /* IntrosTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntrosTableViewCell.h; sourceTree = "<group>"; };
 		CC14DADB1E534AFD005B8B2E /* IntrosTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntrosTableViewCell.m; sourceTree = "<group>"; };
 		CC14DADD1E534B12005B8B2E /* IntrosCellModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IntrosCellModel.h; sourceTree = "<group>"; };
@@ -119,8 +143,6 @@
 		CCA0F19E1E5466640027FAE8 /* SADataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SADataManager.m; sourceTree = "<group>"; };
 		CCA0F1A01E5466770027FAE8 /* SADataSource.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SADataSource.h; sourceTree = "<group>"; };
 		CCA0F1A11E5466770027FAE8 /* SADataSource.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SADataSource.m; sourceTree = "<group>"; };
-		CCA0F1EC1E5488840027FAE8 /* UIAlertController+WODWindow.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = "UIAlertController+WODWindow.h"; path = "../../Downloads/DataManager/Categories/UIAlertController+WODWindow.h"; sourceTree = "<group>"; };
-		CCA0F1ED1E5488840027FAE8 /* UIAlertController+WODWindow.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = "UIAlertController+WODWindow.m"; path = "../../Downloads/DataManager/Categories/UIAlertController+WODWindow.m"; sourceTree = "<group>"; };
 		CCD105E01E56FF18008EA9CA /* SingleCollectionReusableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SingleCollectionReusableView.h; sourceTree = "<group>"; };
 		CCD105E11E56FF18008EA9CA /* SingleCollectionReusableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SingleCollectionReusableView.m; sourceTree = "<group>"; };
 		CCD105E41E57080C008EA9CA /* UILabel+UILabel___Height.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UILabel+UILabel___Height.h"; sourceTree = "<group>"; };
@@ -133,6 +155,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC1042E31E5F321900AA4420 /* CoreLocation.framework in Frameworks */,
+				CC1042DB1E5F0A9800AA4420 /* MapKit.framework in Frameworks */,
 				F80CC086BD04B2B057CC2904 /* libPods-TestView.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -147,6 +171,30 @@
 				E5D064CBE8CF03A6A03F0D01 /* Pods-TestView.release.xcconfig */,
 			);
 			name = Pods;
+			sourceTree = "<group>";
+		};
+		CC1042E41E5F374500AA4420 /* Map */ = {
+			isa = PBXGroup;
+			children = (
+				CC1042F51E605FAF00AA4420 /* BurgerButton.png */,
+				CC1042EF1E604E4B00AA4420 /* vertical-shop.png */,
+				CC1042DC1E5F0AC500AA4420 /* MapViewController.h */,
+				CC1042DD1E5F0AC500AA4420 /* MapViewController.m */,
+				CC1042DF1E5F187000AA4420 /* ShopOnMapModell.h */,
+				CC1042E01E5F187100AA4420 /* ShopOnMapModell.m */,
+			);
+			name = Map;
+			sourceTree = "<group>";
+		};
+		CC1042F71E60685700AA4420 /* Search */ = {
+			isa = PBXGroup;
+			children = (
+				CC1042F81E60687C00AA4420 /* SearchPopupViewController.h */,
+				CC1042F91E60687C00AA4420 /* SearchPopupViewController.m */,
+				CC1042FB1E60795700AA4420 /* SearchPassion.h */,
+				CC1042FC1E60795700AA4420 /* SearchPassion.m */,
+			);
+			name = Search;
 			sourceTree = "<group>";
 		};
 		CC1649A31E4C663100494989 = {
@@ -208,6 +256,10 @@
 			children = (
 				CC8649421E4DCB48008F671B /* PeoplesViewController.h */,
 				CC8649431E4DCB48008F671B /* PeoplesViewController.m */,
+				CC1042D51E5EEE2500AA4420 /* SlideMenuViewController.h */,
+				CC1042D61E5EEE2500AA4420 /* SlideMenuViewController.m */,
+				CC1042F71E60685700AA4420 /* Search */,
+				CC1042E41E5F374500AA4420 /* Map */,
 				CCA0F1671E545C240027FAE8 /* Pictures */,
 				CC86495A1E51BA00008F671B /* Singles */,
 				CC86495B1E51BA10008F671B /* Intros */,
@@ -260,6 +312,7 @@
 		CCA0F1671E545C240027FAE8 /* Pictures */ = {
 			isa = PBXGroup;
 			children = (
+				CC1042D81E5F00B100AA4420 /* SSD.png */,
 				CCA0F1971E545D960027FAE8 /* EmptyLike.png */,
 				CCA0F1831E545CA30027FAE8 /* Cancel.png */,
 				CCA0F1841E545CA30027FAE8 /* Check.png */,
@@ -311,8 +364,6 @@
 		CCD105E31E5707E4008EA9CA /* Category */ = {
 			isa = PBXGroup;
 			children = (
-				CCA0F1EC1E5488840027FAE8 /* UIAlertController+WODWindow.h */,
-				CCA0F1ED1E5488840027FAE8 /* UIAlertController+WODWindow.m */,
 				CCD105E41E57080C008EA9CA /* UILabel+UILabel___Height.h */,
 				CCD105E51E57080C008EA9CA /* UILabel+UILabel___Height.m */,
 			);
@@ -322,6 +373,8 @@
 		EAAECD6C7D99D43028C7B19E /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				CC1042E21E5F321900AA4420 /* CoreLocation.framework */,
+				CC1042DA1E5F0A9800AA4420 /* MapKit.framework */,
 				5837689D8A04EB4BE67B5396 /* libPods-TestView.a */,
 			);
 			name = Frameworks;
@@ -361,7 +414,7 @@
 				TargetAttributes = {
 					CC1649AB1E4C663100494989 = {
 						CreatedOnToolsVersion = 8.2.1;
-						DevelopmentTeam = FRXW47TW78;
+						DevelopmentTeam = GFDYH7ZFV6;
 						ProvisioningStyle = Automatic;
 					};
 				};
@@ -401,10 +454,12 @@
 				CCA0F1921E545CA30027FAE8 /* Girl3.png in Resources */,
 				CCA0F18C1E545CA30027FAE8 /* Cancel.png in Resources */,
 				CCA0F18E1E545CA30027FAE8 /* CutPhoto3.png in Resources */,
+				CC1042D91E5F00B100AA4420 /* SSD.png in Resources */,
 				CCA0F1911E545CA30027FAE8 /* FullLike2.png in Resources */,
 				CCA0F17C1E545C970027FAE8 /* CutPhotoBig.png in Resources */,
 				CCA0F18F1E545CA30027FAE8 /* CutPhoto4.png in Resources */,
 				CC1649BC1E4C663200494989 /* Assets.xcassets in Resources */,
+				CC1042F01E604E4B00AA4420 /* vertical-shop.png in Resources */,
 				CCA0F17E1E545C970027FAE8 /* FullLike.png in Resources */,
 				CC1649BA1E4C663200494989 /* Main.storyboard in Resources */,
 				CCA0F17B1E545C970027FAE8 /* CountCircle.png in Resources */,
@@ -415,6 +470,7 @@
 				CCA0F1721E545C8E0027FAE8 /* SearchButton.png in Resources */,
 				CCA0F18D1E545CA30027FAE8 /* Check.png in Resources */,
 				CCA0F1811E545C970027FAE8 /* Man2.png in Resources */,
+				CC1042F61E605FAF00AA4420 /* BurgerButton.png in Resources */,
 				CCA0F1941E545CA30027FAE8 /* Girl5.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -481,6 +537,7 @@
 				CC1649B41E4C663200494989 /* AppDelegate.m in Sources */,
 				CC8649561E51A23E008F671B /* IntrosTableViewController.m in Sources */,
 				CC8649591E51A251008F671B /* MatchesTableViewController.m in Sources */,
+				CC1042DE1E5F0AC500AA4420 /* MapViewController.m in Sources */,
 				CC8649441E4DCB48008F671B /* PeoplesViewController.m in Sources */,
 				CC1649B11E4C663200494989 /* main.m in Sources */,
 				CCA0F1A21E5466770027FAE8 /* SADataSource.m in Sources */,
@@ -489,10 +546,13 @@
 				CC14DADF1E534B12005B8B2E /* IntrosCellModel.m in Sources */,
 				CC14DAE21E534F64005B8B2E /* SingleCollectionViewCell.m in Sources */,
 				CC7E39E81E4CB582003D2B0D /* FeedbackViewController.m in Sources */,
+				CC1042D71E5EEE2500AA4420 /* SlideMenuViewController.m in Sources */,
 				CC14DAEB1E5443F8005B8B2E /* MatchesTableViewCell.m in Sources */,
-				CCA0F1EE1E5488840027FAE8 /* UIAlertController+WODWindow.m in Sources */,
 				CCA0F19F1E5466640027FAE8 /* SADataManager.m in Sources */,
+				CC1042E11E5F187100AA4420 /* ShopOnMapModell.m in Sources */,
 				CC14DAE81E5443CD005B8B2E /* MatchesCellModel.m in Sources */,
+				CC1042FA1E60687C00AA4420 /* SearchPopupViewController.m in Sources */,
+				CC1042FD1E60795700AA4420 /* SearchPassion.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -611,10 +671,11 @@
 			baseConfigurationReference = B48C67D383981754C3066C64 /* Pods-TestView.debug.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = FRXW47TW78;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = GFDYH7ZFV6;
 				INFOPLIST_FILE = TestView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = VR.TestView;
+				PRODUCT_BUNDLE_IDENTIFIER = JW.test.cer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Debug;
@@ -624,10 +685,11 @@
 			baseConfigurationReference = E5D064CBE8CF03A6A03F0D01 /* Pods-TestView.release.xcconfig */;
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
-				DEVELOPMENT_TEAM = FRXW47TW78;
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				DEVELOPMENT_TEAM = GFDYH7ZFV6;
 				INFOPLIST_FILE = TestView/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = VR.TestView;
+				PRODUCT_BUNDLE_IDENTIFIER = JW.test.cer;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 			};
 			name = Release;

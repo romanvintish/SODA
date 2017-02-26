@@ -27,6 +27,7 @@ NSInteger const kSAStepOffset = 20;
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
     self.shops = [[NSMutableArray alloc] init];
     self.automaticallyAdjustsScrollViewInsets = NO;
     

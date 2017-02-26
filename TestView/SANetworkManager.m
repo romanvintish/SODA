@@ -8,9 +8,10 @@
 
 #import "SANetworkManager.h"
 #import <AFNetworking/AFNetworking.h>
-#import "UIAlertController+WODWindow.h"
 #import "SingleCellModell.h"
 #import "IntrosCellModel.h"
+#import "ShopOnMapModell.h"
+#import "SearchPassion.h"
 
 NSString *const kSABaseURL = @"http://2fair.jellyworkz.com/public/";
 NSString *const kSARequestObserverKeyConnectionStatus = @"connectionStatus";
@@ -139,7 +140,7 @@ NSString * const kSARequestTypeToString[] =
         message = @"Server error";
     }
     
-    [UIAlertController globalAlertWithTitle:(NSString *)title message:(NSString *)message];
+    [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
     self.serverError = SAInternetErrorTypeNotError;
 }
 
@@ -200,6 +201,64 @@ NSString * const kSARequestTypeToString[] =
               failure:^(NSURLSessionTask *operation, NSError *error) {
                   NSLog(@"Error: %@", error);
               }];
+}
+
+- (void)fetchNearlyShopsWithCordinate:(CLLocationCoordinate2D)coordinate andRadius:(CGFloat)radius withCompletion:(void (^)(id obj, NSError *err))block
+{
+    NSDictionary *parameters = @{
+                                                                     @"long"    :   [NSNumber numberWithDouble:coordinate.longitude],
+                                                                     @"lat"     :   [NSNumber numberWithDouble:coordinate.latitude],
+                                                                     @"radius"  :   [NSNumber numberWithDouble:radius]
+                                                                     };
+    NSString *urlSearchWithName = [NSString stringWithFormat:@"%@/user/data/search/location",kSABaseURL];
+    
+    [self.manager GET:urlSearchWithName
+           parameters:parameters
+             progress:nil
+              success:^(NSURLSessionTask *task, id responseObject) {
+                  NSMutableArray *items = [[NSMutableArray alloc] init];
+                  for (id obj in [responseObject valueForKey:@"shops"]) {
+                      ShopOnMapModell *curentItem = [EKMapper objectFromExternalRepresentation:obj
+                                                                                   withMapping:[ShopOnMapModell objectMapping]];
+                      CLLocationCoordinate2D coordinate;
+                      coordinate.latitude = [curentItem.latitude doubleValue];
+                      coordinate.longitude = [curentItem.longitude doubleValue];
+                      
+                      curentItem.coordinate = coordinate;
+                      
+                      curentItem.title = curentItem.username;
+
+                      [items addObject:curentItem];
+                  }
+                  block(items,nil);
+                  }
+              failure:^(NSURLSessionTask *operation, NSError *error) {
+                  NSLog(@"Error: %@", error);
+              }];
+}
+
+- (void)getPassion:(void (^)(id obj, NSError *err))complitionBlock failure:(void (^)(void))failureBlock {
+    NSString *urlSearchWithName = [NSString stringWithFormat:@"%@/user/data/outhData",kSABaseURL];
+    
+    [self.manager GET:urlSearchWithName parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
+        
+    } success:^(NSURLSessionDataTask* _Nonnull task, id  _Nullable responseObject) {
+        NSMutableArray *items = [[NSMutableArray alloc] init];
+        for (id obj in [responseObject valueForKey:@"passionsArr"]) {
+            SearchPassion *curentItem = [EKMapper objectFromExternalRepresentation:obj
+                                                                         withMapping:[SearchPassion objectMapping]];
+            [items addObject:curentItem];
+        }
+        
+        if (complitionBlock) {
+            complitionBlock(items,nil);
+        }
+    } failure:^(NSURLSessionDataTask* _Nullable task, NSError* _Nonnull error) {
+        if (failureBlock) {
+            failureBlock();
+        }
+    }];
+
 }
 
 #pragma mark - POST

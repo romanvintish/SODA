@@ -84,5 +84,19 @@ NSString *const kSAUserID = @"2233855952";
     }];
 }
 
+- (void)fetchNearlyShopsWithCordinate:(CLLocationCoordinate2D)coordinate andRadius:(CGFloat)radius withCompletion:(void (^)(id obj, NSError *err))block{
+    [self.requestManager fetchNearlyShopsWithCordinate:coordinate andRadius:radius withCompletion:^(id obj, NSError *err) {
+        block(obj,err);
+    }];
+}
+
+- (void)getPassion:(void (^)(id obj, NSError *err))complitionBlock failure:(void (^)(void))failureBlock{
+    [self.requestManager getPassion:^(id obj, NSError *err) {
+        complitionBlock(obj,err);
+    } failure:^{
+        failureBlock();
+    }];
+}
+     
 @end
 
