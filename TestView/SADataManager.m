@@ -64,17 +64,9 @@ NSString *const kSAUserID = @"2233855952";
     [self.requestManager serverHasErrorWithType:SAInternetErrorTypeLostConnection];
 }
 
-- (void)downloadShopCollectionsWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block
-{
-    if (self.connectionDetected) {
+- (void)downloadShopCollectionsWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block{
         [self.requestManager fetchShopsWithID:kSAUserID withStart:start withEnd:end withCompletion:^(id obj, NSError *err) {
             block(obj,err);}];
-    } else {
-        if (block) {
-            NSError *err = [[NSError alloc] init];
-            block(nil,err);
-        }
-    }
 }
 
 - (void)downloadShopCollectionsForIntrosWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block{
