@@ -40,7 +40,6 @@
 
 - (void)setCellWithModel:(IntrosCellModel *)model
 {
-    [self addAttributeToLabels];
     [self addGestureRecognizer];
     
     NSInteger likecount = [[model.products lastObject] LikedCount];
@@ -52,6 +51,8 @@
     [self.userPhoto sd_setImageWithURL:[NSURL URLWithString: model.shopPicture] placeholderImage:nil];
     [self.friendPhoto sd_setImageWithURL:[NSURL URLWithString: [[model.products lastObject] prodImage]] placeholderImage:nil];
     
+    [self addAttributeToLabels];
+
     if (model.followed > 0) {
         [self.likeButton setImage:[UIImage imageNamed:@"FullLike.png"] forState:UIControlStateNormal];
     }
@@ -64,12 +65,16 @@
                                                                                             NSKernAttributeName : @(2.0f)
                                                                                             }];
     self.userNameLabel.attributedText = nameAttributedString;
+    NSString *frname = self.friendNameLabel.text;
+    NSLog(@"%@", frname);
     
-    NSAttributedString *askAttributedString = [[NSAttributedString alloc] initWithString:self.friendNameLabel.text
-                                                                              attributes:@{
-                                                                                           NSKernAttributeName : @(2.0f)
-                                                                                           }];
-    self.friendNameLabel.attributedText = askAttributedString;
+    if (self.friendNameLabel.text != nil) {
+        NSAttributedString *askAttributedString = [[NSAttributedString alloc] initWithString:self.friendNameLabel.text
+                                                                                  attributes:@{
+                                                                                               NSKernAttributeName : @(2.0f)
+                                                                                               }];
+        self.friendNameLabel.attributedText = askAttributedString;
+    }
     
     [self.userNameLabel setPreferredMaxLayoutWidth:194];
     [self.friendNameLabel setPreferredMaxLayoutWidth:194];

@@ -15,7 +15,7 @@
     return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
         [mapping mapPropertiesFromDictionary:@{
                                                @"passionTitle" : @"passionTitle",
-                                               @"sortParam" : @"sortParam"
+                                               @"id" : @"sortParam"
                                                }];
     }];
 }

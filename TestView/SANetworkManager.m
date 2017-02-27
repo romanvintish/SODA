@@ -12,6 +12,8 @@
 #import "IntrosCellModel.h"
 #import "ShopOnMapModell.h"
 #import "SearchPassion.h"
+#import "SearchedProducts.h"
+#import "SearchedShops.h"
 
 NSString *const kSABaseURL = @"http://2fair.jellyworkz.com/public/";
 NSString *const kSARequestObserverKeyConnectionStatus = @"connectionStatus";
@@ -175,10 +177,14 @@ NSString * const kSARequestTypeToString[] =
                      }
                          [items addObject:curentItem];
                      }
+             if (block) {
              block(items,nil);
+             }
                  }
          failure:^(NSURLSessionTask *operation, NSError *error) {
-        NSLog(@"Error: %@", error);
+             if (block) {
+                 block(nil,error);
+             }
     }];
 }
 
@@ -196,10 +202,15 @@ NSString * const kSARequestTypeToString[] =
                                                                                     withMapping:[IntrosCellModel objectMapping]];
                       [items addObject:curentItem];
                   }
+                  if (block) {
                   block(items,nil);
+                  }
               }
               failure:^(NSURLSessionTask *operation, NSError *error) {
                   NSLog(@"Error: %@", error);
+                  if (block) {
+                      block(nil,error);
+                  }
               }];
 }
 
@@ -230,14 +241,18 @@ NSString * const kSARequestTypeToString[] =
 
                       [items addObject:curentItem];
                   }
+                  if (block) {
                   block(items,nil);
                   }
+                  }
               failure:^(NSURLSessionTask *operation, NSError *error) {
-                  NSLog(@"Error: %@", error);
+                  if (block) {
+                      block(nil,error);
+                  }
               }];
 }
 
-- (void)getPassion:(void (^)(id obj, NSError *err))complitionBlock failure:(void (^)(void))failureBlock {
+- (void)getPassion:(void (^)(id obj, NSError *err))complitionBlock{
     NSString *urlSearchWithName = [NSString stringWithFormat:@"%@/user/data/outhData",kSABaseURL];
     
     [self.manager GET:urlSearchWithName parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -254,11 +269,71 @@ NSString * const kSARequestTypeToString[] =
             complitionBlock(items,nil);
         }
     } failure:^(NSURLSessionDataTask* _Nullable task, NSError* _Nonnull error) {
-        if (failureBlock) {
-            failureBlock();
+        if (complitionBlock){
+            NSError *err = [[NSError alloc] init];
+            complitionBlock(nil,err);
         }
     }];
 
+}
+
+- (void)searchForUser:(NSString *)userId
+           withParams:(NSDictionary *)params
+      complitionBlock:(void (^)(id searchedObj))complitionBlock
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    NSString *urlSearchWithName = [NSString stringWithFormat:@"%@user/%@/data/search",kSABaseURL,userId];
+
+    //self.manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
+    
+    [self.manager GET:urlSearchWithName
+           parameters:params
+             progress:nil
+              success:^(NSURLSessionDataTask* _Nonnull task, id  _Nullable responseObject) {
+                  NSMutableArray *items = [[NSMutableArray alloc] init];
+                  for (id obj in [responseObject valueForKey:@"products"]) {
+                       SearchedProducts *curentItem = [EKMapper objectFromExternalRepresentation:obj
+                                                                                 withMapping:[SearchedProducts objectMapping]];
+                      [items addObject:curentItem];
+                  }
+                  
+                  if (complitionBlock) {
+                      complitionBlock(items);
+        }
+    }
+              failure:^(NSURLSessionDataTask* _Nullable task, NSError* _Nonnull error) {
+        if (failure) {
+            failure(task,error);
+        }
+    }];
+}
+
+- (void)searchShopsForUser:(NSString *)userId
+           withParams:(NSDictionary *)params
+      complitionBlock:(void (^)(id searchedObj))complitionBlock
+              failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    NSString *urlSearchWithName = [NSString stringWithFormat:@"%@user/%@/data/search",kSABaseURL,userId];
+    
+    [self.manager GET:urlSearchWithName
+           parameters:params
+             progress:nil
+              success:^(NSURLSessionDataTask* _Nonnull task, id  _Nullable responseObject) {
+                  NSLog(@"%@",responseObject);
+                  NSMutableArray *items = [[NSMutableArray alloc] init];
+                  for (id obj in [responseObject valueForKey:@"shops"]) {
+                      SearchedShops *curentItem = [EKMapper objectFromExternalRepresentation:obj
+                                                                                    withMapping:[SearchedShops objectMapping]];
+                      [items addObject:curentItem];
+                  }
+                  
+                  if (complitionBlock) {
+                      complitionBlock(items);
+                  }
+              }
+              failure:^(NSURLSessionDataTask* _Nullable task, NSError* _Nonnull error) {
+                  if (failure) {
+                      failure(task,error);
+                  }
+              }];
 }
 
 #pragma mark - POST

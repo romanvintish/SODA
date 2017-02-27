@@ -8,6 +8,16 @@
 
 #import <UIKit/UIKit.h>
 
+@protocol SearchViewControllerDelegate <NSObject>
+
+- (void)controllerReturnData:(id)data;
+- (void)controllerReturnCategory:(NSString *)category;
+
+@end
+
 @interface SearchPopupViewController : UIViewController
+
+@property   (nonatomic, weak) id<SearchViewControllerDelegate> delegate;
+@property   (nonatomic, weak) id<SearchViewControllerDelegate> shopDelegate;
 
 @end

@@ -11,22 +11,63 @@
 #import "SADataManager.h"
 #import "SingleCollectionReusableView.h"
 #import "UILabel+UILabel___Height.h"
+#import "SearchPopupViewController.h"
 
 NSInteger const kSAStartingOffset = 0;
 NSInteger const kSAStepOffset = 20;
 
-@interface SinglesCollectionViewController ()
+@interface SinglesCollectionViewController ()<SearchViewControllerDelegate>
 
 @property   (nonatomic, strong) NSMutableArray *shops;
 @property   (nonatomic) NSInteger curentOffset;
+
+@property   (nonatomic, strong) NSMutableArray *searchedProducts;
+@property   (nonatomic, strong) NSString *searchedCategory;
+@property   (nonatomic) NSInteger curentOffsetForSearch;
 
 @end
 
 @implementation SinglesCollectionViewController
 
+- (void)controllerReturnData:(id)data{
+    NSLog(@"%@",data);
+    self.searchedProducts = [[NSMutableArray alloc] init];
+    for (int i = 0; i< [data count] ; i++) {
+        Products *prod = [[Products alloc] init];
+        if ([[data objectAtIndex:i] descriptions] != nil) {
+            [prod setDescriptions:[[data objectAtIndex:i] descriptions]];
+        } else {
+            [prod setDescriptions:@""];
+        }
+        if ([[data objectAtIndex:i] image] != nil) {
+            [prod setImage:[[data objectAtIndex:i] image]];
+        } else {
+            [prod setImage:@""];
+        }
+        if ([[data objectAtIndex:i] is_liked] != nil) {
+            [prod setIs_liked:[[data objectAtIndex:i] is_liked]];
+        } else {
+            [prod setIs_liked:NO];
+        }
+        [prod setRealName:@""];
+        [self.searchedProducts addObject:prod];
+    }
+    self.curentOffsetForSearch = self.searchedProducts.count;
+    [self.collectionView reloadData];
+}
+
+- (void)controllerReturnCategory:(NSString *)category{
+    self.searchedCategory = category;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(searchSecondTaped)
+                                                 name:@"searchButtonSecondTaped"
+                                               object:nil];
     
     self.shops = [[NSMutableArray alloc] init];
     self.automaticallyAdjustsScrollViewInsets = NO;
@@ -42,6 +83,15 @@ NSInteger const kSAStepOffset = 20;
     }];
 }
 
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+-(void)searchSecondTaped{
+    self.searchedProducts = nil;
+    [self.collectionView reloadData];
+}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
@@ -53,12 +103,18 @@ NSInteger const kSAStepOffset = 20;
 
 - (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
+    if (self.searchedProducts) {
+        return 1;
+    }
     return self.shops.count;
 }
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
+    if (self.searchedProducts) {
+        return self.searchedProducts.count;
+    }
     return [[[self.shops objectAtIndex:section] products] count];
 }
 
@@ -73,8 +129,42 @@ NSInteger const kSAStepOffset = 20;
         [cell.leftBottomSeparator removeFromSuperview];
     }
 
-    [cell setCellWithModel: [[[self.shops objectAtIndex:indexPath.section] products] objectAtIndex:indexPath.row ] ];
+    if (self.searchedProducts) {
+        [cell setCellWithModel: [self.searchedProducts objectAtIndex:indexPath.row ]];
+    } else {
+        [cell setCellWithModel: [[[self.shops objectAtIndex:indexPath.section] products] objectAtIndex:indexPath.row ] ];}
     
+    if (self.searchedProducts) {
+        if (indexPath.row >= self.searchedProducts.count - 1) {
+            [[SADataManager sharedManager] searchInTheCategory:self.searchedCategory
+                                                     withMinId:[NSString stringWithFormat:@"%d",self.curentOffsetForSearch]
+                                                      andMaxId:[NSString stringWithFormat:@"%d",self.curentOffsetForSearch+kSAStepOffset]
+                                               complitionBlock:^(id data) {
+                                                   for (int i = 0; i< [data count] ; i++) {
+                                                       Products *prod = [[Products alloc] init];
+                                                       if ([[data objectAtIndex:i] descriptions] != nil) {
+                                                           [prod setDescriptions:[[data objectAtIndex:i] descriptions]];
+                                                       } else {
+                                                           [prod setDescriptions:@""];
+                                                       }
+                                                       if ([[data objectAtIndex:i] image] != nil) {
+                                                           [prod setImage:[[data objectAtIndex:i] image]];
+                                                       } else {
+                                                           [prod setImage:@""];
+                                                       }
+                                                       if ([[data objectAtIndex:i] is_liked] != nil) {
+                                                           [prod setIs_liked:[[data objectAtIndex:i] is_liked]];
+                                                       } else {
+                                                           [prod setIs_liked:NO];
+                                                       }
+                                                       [prod setRealName:@""];
+                                                       [self.searchedProducts addObject:prod];
+                                                   }
+                                                   [self.collectionView reloadData];
+                                                   self.curentOffsetForSearch += kSAStepOffset;
+                                               } failure:nil];
+        }
+    } else{
      if (indexPath.section >= self.shops.count - 1) {
          [[SADataManager sharedManager] downloadShopCollectionsWithStart:self.curentOffset withEnd:self.curentOffset + kSAStepOffset WithCompletion:^(id obj, NSError *err) {
              for (id item in obj) {
@@ -85,6 +175,7 @@ NSInteger const kSAStepOffset = 20;
              [self.collectionView reloadData];
              self.curentOffset += kSAStepOffset;
      }];
+     }
     }
     
     return cell;
@@ -96,11 +187,22 @@ NSInteger const kSAStepOffset = 20;
 
 - (CGSize)collectionView:(UICollectionView*)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath*)indexPath
 {
-    NSString *text1 = [[[[self.shops objectAtIndex:indexPath.section]products] objectAtIndex:indexPath.row] realName];
+    NSString *text1;
+    if (self.searchedProducts) {
+        text1 = [[self.searchedProducts objectAtIndex:indexPath.row] realName];
+    } else {
+        text1 = [[[[self.shops objectAtIndex:indexPath.section]products] objectAtIndex:indexPath.row] realName];
+    }
+    
     CGFloat height1 = [UILabel heightForText:text1 withViewWidth:self.view.frame.size.width/2 textFont:[UIFont fontWithName:@"Avenir Heavy" size:12]];
     
-    NSString *text2 = [[[[self.shops objectAtIndex:indexPath.section]products] objectAtIndex:indexPath.row] descriptions];
-    NSLog(@"%@",text2);
+    NSString *text2;
+    if (self.searchedProducts) {
+        text2 = [[self.searchedProducts objectAtIndex:indexPath.row] descriptions];
+    } else {
+        text2 = [[[[self.shops objectAtIndex:indexPath.section]products] objectAtIndex:indexPath.row] descriptions];
+    }
+
     CGFloat height2 = [UILabel heightForText:text2 withViewWidth:self.view.frame.size.width/2 textFont:[UIFont fontWithName:@"Avenir Medium" size:13]];
     
     CGFloat height = self.view.frame.size.width/2 + height1 + height2 ;

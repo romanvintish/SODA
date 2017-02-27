@@ -30,7 +30,7 @@
 
 @property (nonatomic, copy) NSString* shopPicture;
 @property (nonatomic, strong) ShopInfoIntros* SellersInfo;
-@property (nonatomic, strong) NSArray *products;
+@property (nonatomic, strong) NSMutableArray *products;
 @property (nonatomic) NSInteger followed;
 
 @end

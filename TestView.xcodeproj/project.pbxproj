@@ -33,6 +33,8 @@
 		CC8649531E51A217008F671B /* SinglesCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8649521E51A217008F671B /* SinglesCollectionViewController.m */; };
 		CC8649561E51A23E008F671B /* IntrosTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8649551E51A23E008F671B /* IntrosTableViewController.m */; };
 		CC8649591E51A251008F671B /* MatchesTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8649581E51A251008F671B /* MatchesTableViewController.m */; };
+		CC8AC65A1E64401B00FE7856 /* SearchedProducts.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8AC6591E64401A00FE7856 /* SearchedProducts.m */; };
+		CC8AC6601E64647D00FE7856 /* SearchedShops.m in Sources */ = {isa = PBXBuildFile; fileRef = CC8AC65F1E64647D00FE7856 /* SearchedShops.m */; };
 		CCA0F1581E545B980027FAE8 /* AddButton.png in Resources */ = {isa = PBXBuildFile; fileRef = CCA0F1561E545B980027FAE8 /* AddButton.png */; };
 		CCA0F1591E545B980027FAE8 /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = CCA0F1571E545B980027FAE8 /* Background.png */; };
 		CCA0F16E1E545C8E0027FAE8 /* FilterButton.png in Resources */ = {isa = PBXBuildFile; fileRef = CCA0F1691E545C8E0027FAE8 /* FilterButton.png */; };
@@ -113,6 +115,10 @@
 		CC8649551E51A23E008F671B /* IntrosTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IntrosTableViewController.m; sourceTree = "<group>"; };
 		CC8649571E51A251008F671B /* MatchesTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MatchesTableViewController.h; sourceTree = "<group>"; };
 		CC8649581E51A251008F671B /* MatchesTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MatchesTableViewController.m; sourceTree = "<group>"; };
+		CC8AC6581E64401A00FE7856 /* SearchedProducts.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchedProducts.h; sourceTree = "<group>"; };
+		CC8AC6591E64401A00FE7856 /* SearchedProducts.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchedProducts.m; sourceTree = "<group>"; };
+		CC8AC65E1E64647D00FE7856 /* SearchedShops.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SearchedShops.h; sourceTree = "<group>"; };
+		CC8AC65F1E64647D00FE7856 /* SearchedShops.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = SearchedShops.m; sourceTree = "<group>"; };
 		CCA0F1561E545B980027FAE8 /* AddButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = AddButton.png; path = 1/AddButton.png; sourceTree = SOURCE_ROOT; };
 		CCA0F1571E545B980027FAE8 /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = Background.png; path = 1/Background.png; sourceTree = SOURCE_ROOT; };
 		CCA0F1691E545C8E0027FAE8 /* FilterButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = FilterButton.png; path = head/FilterButton.png; sourceTree = SOURCE_ROOT; };
@@ -193,6 +199,10 @@
 				CC1042F91E60687C00AA4420 /* SearchPopupViewController.m */,
 				CC1042FB1E60795700AA4420 /* SearchPassion.h */,
 				CC1042FC1E60795700AA4420 /* SearchPassion.m */,
+				CC8AC6581E64401A00FE7856 /* SearchedProducts.h */,
+				CC8AC6591E64401A00FE7856 /* SearchedProducts.m */,
+				CC8AC65E1E64647D00FE7856 /* SearchedShops.h */,
+				CC8AC65F1E64647D00FE7856 /* SearchedShops.m */,
 			);
 			name = Search;
 			sourceTree = "<group>";
@@ -260,10 +270,10 @@
 				CC1042D61E5EEE2500AA4420 /* SlideMenuViewController.m */,
 				CC1042F71E60685700AA4420 /* Search */,
 				CC1042E41E5F374500AA4420 /* Map */,
-				CCA0F1671E545C240027FAE8 /* Pictures */,
 				CC86495A1E51BA00008F671B /* Singles */,
 				CC86495B1E51BA10008F671B /* Intros */,
 				CC86495C1E51BA1D008F671B /* Matches */,
+				CCA0F1671E545C240027FAE8 /* Pictures */,
 			);
 			name = Peoples;
 			sourceTree = "<group>";
@@ -530,6 +540,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				CC8AC65A1E64401B00FE7856 /* SearchedProducts.m in Sources */,
 				CCA0F19C1E5466510027FAE8 /* SANetworkManager.m in Sources */,
 				CCD105E21E56FF18008EA9CA /* SingleCollectionReusableView.m in Sources */,
 				CC14DADC1E534AFD005B8B2E /* IntrosTableViewCell.m in Sources */,
@@ -553,6 +564,7 @@
 				CC14DAE81E5443CD005B8B2E /* MatchesCellModel.m in Sources */,
 				CC1042FA1E60687C00AA4420 /* SearchPopupViewController.m in Sources */,
 				CC1042FD1E60795700AA4420 /* SearchPassion.m in Sources */,
+				CC8AC6601E64647D00FE7856 /* SearchedShops.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

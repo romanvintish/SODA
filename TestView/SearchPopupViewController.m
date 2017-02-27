@@ -13,6 +13,8 @@
 
 @property (strong, nonatomic) IBOutlet UIPickerView *pickerView;
 @property (nonatomic, strong) NSMutableArray *categories;
+@property (strong, nonatomic) IBOutlet UIView *blurView;
+@property (nonatomic, strong) NSString *selectedCategory;
 
 @end
 
@@ -21,14 +23,35 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.selectedCategory = @"0";
+    
+    if (!UIAccessibilityIsReduceTransparencyEnabled()) {
+        self.blurView.backgroundColor = [UIColor clearColor];
+        
+        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleLight];
+        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
+        blurEffectView.frame = self.blurView.bounds;
+        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        [self.blurView addSubview:blurEffectView];
+    }
+    
     [[SADataManager sharedManager] getPassion:^(id obj, NSError *err) {
         if (!err) {
             self.categories = obj;
             [self.pickerView reloadAllComponents];
         }
-    } failure:^{
-        
     }];
+    
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(dismissView)];
+    
+    [self.blurView addGestureRecognizer:tap];
+}
+
+-(void)dismissView{
+    [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+}
+
+- (void)viewDidAppear:(BOOL)animated {
 }
 
 - (void)didReceiveMemoryWarning {
@@ -57,14 +80,39 @@
 }
 
 - (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
-    
+    self.selectedCategory = [[[self.categories objectAtIndex:row] valueForKey:@"sortParam"] stringValue] ;
 }
 
 - (IBAction)doneButtonTaped:(id)sender {
-    [self.presentingViewController dismissViewControllerAnimated:YES completion:^{
-        UIView *lastView = self.presentingViewController.view.subviews[self.presentingViewController.view.subviews.count-1];
-        lastView.removeFromSuperview;
+    [[SADataManager sharedManager] searchInTheCategory:self.selectedCategory
+                                             withMinId:@"0"
+                                              andMaxId:@"30"
+                                       complitionBlock:^(id searchedObj) {
+                                           if ([self.delegate respondsToSelector:@selector(controllerReturnData:)]) {
+                                               [self.delegate controllerReturnData:searchedObj];
+                                           }
+                                           if ([self.delegate respondsToSelector:@selector(controllerReturnCategory:)]) {
+                                               [self.delegate controllerReturnCategory:self.selectedCategory];
+                                           }
+                                           [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
+    }
+                                               failure:^(NSURLSessionDataTask *task, NSError *error) {
+                                            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
     }];
+    
+    [[SADataManager sharedManager] searchShopsInTheCategory:self.selectedCategory
+                                             withMinId:@"0"
+                                              andMaxId:@"30"
+                                       complitionBlock:^(id searchedObj) {
+                                           if ([self.shopDelegate respondsToSelector:@selector(controllerReturnData:)]) {
+                                               [self.shopDelegate controllerReturnData:searchedObj];
+                                           }
+                                           if ([self.shopDelegate respondsToSelector:@selector(controllerReturnCategory:)]) {
+                                               [self.shopDelegate controllerReturnCategory:self.selectedCategory];
+                                           }
+                                       }
+                                               failure:nil];
+
 }
 
 @end

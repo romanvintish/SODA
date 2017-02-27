@@ -15,8 +15,6 @@ NSString *const kSAUserID = @"2233855952";
 @property (nonatomic, strong, readwrite) SADataSource *dataSource;
 @property (nonatomic, strong, readwrite) SANetworkManager *requestManager;
 @property (nonatomic, strong) NSString *token;
-@property (nonatomic, strong) NSOperationQueue *myQueue;
-@property (nonatomic, assign) BOOL taskWasComplete;
 @property (nonatomic, assign) BOOL connectionDetected;
 
 @end
@@ -41,8 +39,6 @@ NSString *const kSAUserID = @"2233855952";
     if (self) {
         self.dataSource = [[SADataSource alloc] init];
         self.requestManager = [[SANetworkManager alloc] initWithDelegate:self];
-        self.myQueue = [[NSOperationQueue alloc] init];
-        self.taskWasComplete = YES;
         self.connectionDetected = NO;
     }
     return self;
@@ -59,8 +55,6 @@ NSString *const kSAUserID = @"2233855952";
 
 - (void)internetHasBeenConnected
 {
-    //[self loginCompletionBloc:nil failBlock:nil];
-    //[self fetchAvailableProducts];
     self.connectionDetected = YES;
 }
 
@@ -72,31 +66,107 @@ NSString *const kSAUserID = @"2233855952";
 
 - (void)downloadShopCollectionsWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block
 {
+    if (self.connectionDetected) {
         [self.requestManager fetchShopsWithID:kSAUserID withStart:start withEnd:end withCompletion:^(id obj, NSError *err) {
-            block(obj,err);
-            }];
+            block(obj,err);}];
+    } else {
+        if (block) {
+            NSError *err = [[NSError alloc] init];
+            block(nil,err);
+        }
+    }
 }
 
-- (void)downloadShopCollectionsForIntrosWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block
-{
-    [self.requestManager fetchShopsForIntrosWithID:kSAUserID withStart:start withEnd:end withCompletion:^(id obj, NSError *err) {
-        block(obj,err);
-    }];
+- (void)downloadShopCollectionsForIntrosWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block{
+    if (self.connectionDetected) {
+        [self.requestManager fetchShopsForIntrosWithID:kSAUserID withStart:start withEnd:end withCompletion:^(id obj, NSError *err) {
+            block(obj,err);}];
+    } else {
+        if (block) {
+            NSError *err = [[NSError alloc] init];
+            block(nil,err);
+        }
+    }
 }
 
 - (void)fetchNearlyShopsWithCordinate:(CLLocationCoordinate2D)coordinate andRadius:(CGFloat)radius withCompletion:(void (^)(id obj, NSError *err))block{
-    [self.requestManager fetchNearlyShopsWithCordinate:coordinate andRadius:radius withCompletion:^(id obj, NSError *err) {
-        block(obj,err);
-    }];
+    if (self.connectionDetected) {
+        [self.requestManager fetchNearlyShopsWithCordinate:coordinate andRadius:radius withCompletion:^(id obj, NSError *err) {
+            block(obj,err);}];
+    } else {
+        if (block) {
+            NSError *err = [[NSError alloc] init];
+            block(nil,err);
+        }
+    }
 }
 
-- (void)getPassion:(void (^)(id obj, NSError *err))complitionBlock failure:(void (^)(void))failureBlock{
-    [self.requestManager getPassion:^(id obj, NSError *err) {
-        complitionBlock(obj,err);
-    } failure:^{
-        failureBlock();
-    }];
+- (void)getPassion:(void (^)(id obj, NSError *err))complitionBlock{
+    if (self.connectionDetected) {
+        [self.requestManager getPassion:^(id obj, NSError *err) {
+            complitionBlock(obj,err);
+             }];
+    } else {
+        if (complitionBlock) {
+            NSError *err = [[NSError alloc] init];
+            complitionBlock(nil,err);
+        }
+    }
+    
+
 }
-     
+
+- (void)searchInTheCategory:(NSString *)category
+                  withMinId:(NSString *)minId
+                   andMaxId:(NSString *)maxId
+            complitionBlock:(void (^)(id searchedObj))complitionBlock
+                    failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    NSDictionary *parameters = @{
+                                 @"category"    :   [category isEqualToString:@""]      ? @""      : category == nil    ? @"" : category,
+                                 @"where"       :   @"products",
+                                 @"minId"       :   [minId isEqualToString:@""]         ? @"0"     : minId == nil       ? @"0" : minId,
+                                 @"maxId"       :   [maxId isEqualToString:@""]         ? @"20"    : maxId == nil       ? @"0" : maxId,
+                                 @"what"        :   @"",
+                                 @"city"        :   @"",
+                                 @"countryName" :   @"",
+                                 @"zipCode"     :   @"",
+                                 @"address"     :   @"",
+                                 };
+
+    if (self.connectionDetected) {
+        [self.requestManager searchForUser:kSAUserID withParams:parameters complitionBlock:complitionBlock failure:failure];
+    } else {
+        if (failure) {
+            failure(nil,nil);
+        }
+    }
+}
+
+- (void)searchShopsInTheCategory:(NSString *)category
+                  withMinId:(NSString *)minId
+                   andMaxId:(NSString *)maxId
+            complitionBlock:(void (^)(id searchedObj))complitionBlock
+                    failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
+    NSDictionary *parameters = @{
+                                 @"category"    :   [category isEqualToString:@""]      ? @""      : category == nil    ? @"" : category,
+                                 @"where"       :   @"shops",
+                                 @"minId"       :   [minId isEqualToString:@""]         ? @"0"     : minId == nil       ? @"0" : minId,
+                                 @"maxId"       :   [maxId isEqualToString:@""]         ? @"20"    : maxId == nil       ? @"0" : maxId,
+                                 @"what"        :   @"",
+                                 @"city"        :   @"",
+                                 @"countryName" :   @"",
+                                 @"zipCode"     :   @"",
+                                 @"address"     :   @"",
+                                 };
+    
+    if (self.connectionDetected) {
+        [self.requestManager searchShopsForUser:kSAUserID withParams:parameters complitionBlock:complitionBlock failure:failure];
+    } else {
+        if (failure) {
+            failure(nil,nil);
+        }
+    }
+}
+
 @end
 

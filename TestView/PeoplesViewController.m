@@ -32,12 +32,11 @@
 {
     [super viewDidLoad];
     
-    
     SinglesCollectionViewController *singles = [self.storyboard instantiateViewControllerWithIdentifier:@"SinglesCollectionViewController"];
     IntrosTableViewController *intros = [self.storyboard instantiateViewControllerWithIdentifier:@"IntrosTableViewController"];
     MatchesTableViewController  *matches = [self.storyboard instantiateViewControllerWithIdentifier:@"MatchesTableViewController"];
     
-    self.myViewControllers = @[singles,intros,matches];
+    self.myViewControllers = [@[singles,intros,matches]mutableCopy];
     
     self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];
     self.pageViewController.dataSource = self;
@@ -55,6 +54,10 @@
     [self addChildViewController:self.pageViewController];
     [self.pageView addSubview:self.pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning
@@ -92,21 +95,21 @@
 }
 
 - (IBAction)searchButtonTaped:(id)sender {
-    if (!UIAccessibilityIsReduceTransparencyEnabled()) {
-        self.view.backgroundColor = [UIColor clearColor];
-        
-        UIBlurEffect *blurEffect = [UIBlurEffect effectWithStyle:UIBlurEffectStyleDark];
-        UIVisualEffectView *blurEffectView = [[UIVisualEffectView alloc] initWithEffect:blurEffect];
-        blurEffectView.frame = self.view.bounds;
-        blurEffectView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-        
-        [self.view addSubview:blurEffectView];
-    }
-    
+    static BOOL isFirstTap = YES;
     SearchPopupViewController *searchController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchController"];
+    searchController.delegate = [self.myViewControllers objectAtIndex:0];
+    searchController.shopDelegate = [self.myViewControllers objectAtIndex:1];
     searchController.providesPresentationContextTransitionStyle = YES;
     searchController.definesPresentationContext = YES;
+    [searchController setModalTransitionStyle:UIModalTransitionStyleCrossDissolve];
     [searchController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
+    
+    if (!isFirstTap) {
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"searchButtonSecondTaped" object:self];
+    }
+    if (isFirstTap) {
+        isFirstTap =NO;
+    }
     [self.navigationController presentViewController:searchController animated:YES completion:nil];
 }
 
