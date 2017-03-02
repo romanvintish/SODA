@@ -10,61 +10,58 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <AFNetworking/AFNetworking.h>
 
+NSString *const kFullLikeImageNameSingle = @"FullLike.png";
+
 @interface SingleCollectionViewCell()
 
-@property (strong, nonatomic) IBOutlet UIButton *likeButton;
-@property (strong, nonatomic) IBOutlet UIImageView *touchedPhotoImage;
-@property (strong, nonatomic) IBOutlet UIImageView *photoImage;
-@property (strong, nonatomic) IBOutlet UILabel *askLabel;
-@property (strong, nonatomic) IBOutlet UILabel *nameLabel;
-@property (strong, nonatomic) IBOutlet UIView *picFrameView;
+@property (weak, nonatomic) IBOutlet UIButton *likeButton;
+@property (weak, nonatomic) IBOutlet UIImageView *touchedPhotoImage;
+@property (weak, nonatomic) IBOutlet UIImageView *photoImage;
+@property (weak, nonatomic) IBOutlet UILabel *askLabel;
+@property (weak, nonatomic) IBOutlet UILabel *nameLabel;
+@property (weak, nonatomic) IBOutlet UIView *picFrameView;
 
 @end
 
 @implementation SingleCollectionViewCell
 
-
 #pragma mark - Setting
 
-
-- (void)layoutSubviews
-{
+- (void)layoutSubviews {
     [super layoutSubviews];
 }
 
-- (void)setCellWithModel:(Products *)model
-{
-    [self addAttributeToLabels];
+- (void)setCellWithModel:(Products *)model {
     [self addGestureRecognizer];
     
-    self.nameLabel.text = model.realName;
-    self.askLabel.text = model.descriptions;
+    self.nameLabel.text = model.realName == nil? @"" : model.realName;
+    self.askLabel.text = model.descriptions == nil? @"" : model.descriptions;
     
     [self.photoImage sd_setImageWithURL:[NSURL URLWithString:model.image]
                  placeholderImage:nil];
     
     if (model.is_liked) {
-        [self.likeButton setImage:[UIImage imageNamed:@"FullLike.png"] forState:UIControlStateNormal];
+        [self.likeButton setImage:[UIImage imageNamed:kFullLikeImageNameSingle] forState:UIControlStateNormal];
     }
+    
+    [self addAttributeToLabels];
 }
 
--(void)addAttributeToLabels
-{
+-(void)addAttributeToLabels {
     NSAttributedString *nameAttributedString = [[NSAttributedString alloc] initWithString:self.nameLabel.text
                                                                                attributes:@{
-                                                                                            NSKernAttributeName : @(2.0f)
+                                                                                            NSKernAttributeName : @(kKernAttributeForName)
                                                                                             }];
     self.nameLabel.attributedText = nameAttributedString;
     
     NSAttributedString *askAttributedString = [[NSAttributedString alloc] initWithString:self.askLabel.text
                                                                               attributes:@{
-                                                                                           NSKernAttributeName : @(1.2f)
+                                                                                           NSKernAttributeName : @(kKernAttributeForAsk)
                                                                                            }];
     self.askLabel.attributedText = askAttributedString;
 }
 
--(void)addGestureRecognizer
-{
+-(void)addGestureRecognizer {
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
                                              initWithTarget:self
                                              action:@selector(photoImageTouched:)];
@@ -87,27 +84,21 @@
     [self.askLabel addGestureRecognizer:tapRecognizer3];
 }
 
-
 #pragma mark - Action
 
-
-- (IBAction)likeProfile:(id)sender
-{
-    [self.likeButton setImage:[UIImage imageNamed:@"FullLike.png"] forState:UIControlStateNormal];
+- (IBAction)likeProfile:(id)sender {
+    [self.likeButton setImage:[UIImage imageNamed:kFullLikeImageNameSingle] forState:UIControlStateNormal];
 }
 
--(void)photoImageTouched:(id) sender
-{
+-(void)photoImageTouched:(id) sender {
     return;
 }
 
--(void)nameLabelTouched:(id) sender
-{
+-(void)nameLabelTouched:(id) sender {
     return;
 }
 
--(void)askLabelTouched:(id) sender
-{
+-(void)askLabelTouched:(id) sender {
     return;
 }
 

@@ -9,10 +9,13 @@
 #import "ShopOnMapModell.h"
 #import <SDWebImage/UIImageView+WebCache.h>
 
+NSString *const kButtonName= @"Go";
+NSString *const kShopImageName= @"vertical-shop.png";
+NSString *const kAnnotationViewIdentifier= @"ShopOnMapModell";
+
 @implementation ShopOnMapModell
 
-+(EKObjectMapping *)objectMapping
-{
++(EKObjectMapping *)objectMapping {
     return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
         [mapping mapPropertiesFromDictionary:@{
                                                @"lat" : @"latitude",
@@ -23,15 +26,15 @@
     }];
 }
 
--(MKAnnotationView*)annotationView{
-    MKAnnotationView *annotationView = [[MKAnnotationView alloc ] initWithAnnotation:self reuseIdentifier:@"ShopOnMapModell"];
+-(MKAnnotationView*)annotationView {
+    MKAnnotationView *annotationView = [[MKAnnotationView alloc ] initWithAnnotation:self reuseIdentifier:kAnnotationViewIdentifier];
     annotationView.enabled =YES;
     annotationView.canShowCallout = YES;
     
     self.imageView = [[UIImageView alloc] init];
-    [self.imageView sd_setImageWithURL:[NSURL URLWithString:self.image] placeholderImage:[UIImage imageNamed:@"vertical-shop.png"]];
+    [self.imageView sd_setImageWithURL:[NSURL URLWithString:self.image] placeholderImage:[UIImage imageNamed:kShopImageName]];
 
-    annotationView.image = [UIImage imageNamed:@"vertical-shop.png"];
+    annotationView.image = [UIImage imageNamed:kShopImageName];
     [annotationView setFrame:CGRectMake(0, 0, 30, 30)];
 
     annotationView.rightCalloutAccessoryView = self.imageView;
@@ -39,7 +42,7 @@
 
     
     UIButton *goButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [goButton setTitle:@"Go" forState:UIControlStateNormal];
+    [goButton setTitle:kButtonName forState:UIControlStateNormal];
     [goButton addTarget:self
                    action:@selector(infoButtonTaped:)
          forControlEvents:UIControlEventTouchUpInside];
@@ -49,8 +52,7 @@
     return annotationView;
 }
 
-- (IBAction)infoButtonTaped:(id)sender
-{
+- (IBAction)infoButtonTaped:(id)sender {
     if ([self.delegate respondsToSelector:@selector(setTrackWithEndPoint:)]) {
         [self.delegate setTrackWithEndPoint:self.coordinate];
     }

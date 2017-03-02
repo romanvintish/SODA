@@ -9,39 +9,34 @@
 #import "MatchesTableViewController.h"
 #import "MatchesTableViewCell.h"
 
+NSString *const kMatchesCellIdentifier = @"matchesCell2";
+
 @interface MatchesTableViewController ()
 
 @end
 
 @implementation MatchesTableViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
 
-
 #pragma mark - Table view data source
 
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return 5;
 }
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    MatchesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"matchesCell2" forIndexPath:indexPath];
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+    MatchesTableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:kMatchesCellIdentifier forIndexPath:indexPath];
     [cell setCellWithModel:nil];
     return cell;
 }

@@ -18,14 +18,14 @@
 
 @interface ShopOnMapModell : NSObject <EKMappingProtocol, MKAnnotation>
 
-@property (nonatomic, strong) NSString *latitude;
-@property (nonatomic, strong) NSString *longitude;
-@property (nonatomic, strong) NSString *username;
-@property (nonatomic, strong) NSString *image;
-@property (nonatomic, strong) UIImageView *imageView;
+@property (nonatomic, strong, nonnull) NSString *latitude;
+@property (nonatomic, strong, nonnull) NSString *longitude;
+@property (nonatomic, strong, nonnull) NSString *username;
+@property (nonatomic, strong, nonnull) NSString *image;
+@property (nonatomic, strong, nonnull) UIImageView *imageView;
 
 @property (nonatomic) CLLocationCoordinate2D coordinate;
-@property (nonatomic, copy, nullable) NSString *title;
+@property (nonatomic, weak , nullable) NSString *title;
 
 @property (nonatomic, weak) id<ShopOnMapModellDelegate> delegate;
 

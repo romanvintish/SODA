@@ -11,8 +11,8 @@
 
 @interface Products : NSObject <EKMappingProtocol>
 
-@property (nonatomic, copy) NSString* descriptions;
-@property (nonatomic, copy) NSString* image;
+@property (nonatomic, strong) NSString* descriptions;
+@property (nonatomic, strong) NSString* image;
 @property (nonatomic) BOOL is_liked;
 @property (nonatomic, strong) NSString* realName;
 
@@ -21,14 +21,14 @@
 
 @interface ShopInfo : NSObject <EKMappingProtocol>
 
-@property (nonatomic, copy) NSString* realName;
+@property (nonatomic, strong) NSString* realName;
 
 @end
 
 
 @interface SingleCellModell : NSObject <EKMappingProtocol>
 
-@property (nonatomic, strong) NSArray *products;
+@property (nonatomic, strong) NSMutableArray *products;
 @property (nonatomic, strong) ShopInfo* SellersInfo;
 
 @end

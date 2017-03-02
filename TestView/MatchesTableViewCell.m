@@ -10,51 +10,44 @@
 
 @interface MatchesTableViewCell()
 
-@property (strong, nonatomic) IBOutlet UIImageView *userPhoto;
-@property (strong, nonatomic) IBOutlet UIImageView *touchUserPhoto;
-@property (strong, nonatomic) IBOutlet UIImageView *cancelButton;
-@property (strong, nonatomic) IBOutlet UIImageView *checkButton;
-@property (strong, nonatomic) IBOutlet UILabel *userNameLabel;
-@property (strong, nonatomic) IBOutlet UILabel *matchRequestLabel;
-@property (strong, nonatomic) IBOutlet UILabel *massageLabel;
-@property (strong, nonatomic) IBOutlet UILabel *dateLabel;
-@property (strong, nonatomic) IBOutlet UILabel *countMessageLabel;
+@property (weak, nonatomic) IBOutlet UIImageView *userPhoto;
+@property (weak, nonatomic) IBOutlet UIImageView *touchUserPhoto;
+@property (weak, nonatomic) IBOutlet UIImageView *cancelButton;
+@property (weak, nonatomic) IBOutlet UIImageView *checkButton;
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *matchRequestLabel;
+@property (weak, nonatomic) IBOutlet UILabel *massageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;
+@property (weak, nonatomic) IBOutlet UILabel *countMessageLabel;
 
 @end
 
 @implementation MatchesTableViewCell
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 }
 
-
 #pragma mark - Setting
 
-
-- (void)setCellWithModel:(MatchesCellModel *)model
-{
+- (void)setCellWithModel:(MatchesCellModel *)model {
     [self addAttributeToLabels];
     [self addGestureRecognizer];
 }
 
--(void)addAttributeToLabels
-{
+-(void)addAttributeToLabels {
     NSAttributedString *nameAttributedString = [[NSAttributedString alloc] initWithString:self.userNameLabel.text
                                                                                attributes:@{
-                                                                                            NSKernAttributeName : @(2.0f)
+                                                                                            NSKernAttributeName : @(kKernAttributeForName)
                                                                                             }];
     self.userNameLabel.attributedText = nameAttributedString;
 }
 
--(void)addGestureRecognizer
-{
+-(void)addGestureRecognizer {
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
                                              initWithTarget:self
                                              action:@selector(userPhotoTouched:)];
@@ -91,32 +84,25 @@
     [self.massageLabel addGestureRecognizer:tapRecognizer5];
 }
 
-
 #pragma mark - Action
 
-
--(void)userPhotoTouched:(id) sender
-{
+-(void)userPhotoTouched:(id) sender {
     return;
 }
 
--(void)cancelButtonTouched:(id) sender
-{
+-(void)cancelButtonTouched:(id) sender {
     return;
 }
 
--(void)checkButtonTouched:(id) sender
-{
+-(void)checkButtonTouched:(id) sender {
     return;
 }
 
--(void)userNameLabelTouched:(id) sender
-{
+-(void)userNameLabelTouched:(id) sender {
     return;
 }
 
--(void)messageLabelTouched:(id) sender
-{
+-(void)messageLabelTouched:(id) sender {
     return;
 }
 

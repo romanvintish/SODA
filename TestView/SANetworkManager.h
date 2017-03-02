@@ -9,40 +9,7 @@
 #import <Foundation/Foundation.h>
 #import "MapKit/MapKit.h"
 
-typedef NS_OPTIONS(NSUInteger, SAInternetErrorType)
-{
-    SAInternetErrorTypeNotError = 0,
-    SAInternetErrorTypeLostConnection = 1,
-    SAInternetErrorTypeServerError,
-    SAInternetErrorTypeEmptyData
-};
-
-typedef NS_OPTIONS(NSUInteger, SAInternetConnectionStatus)
-{
-    SAInternetConnectionStatusNotConnection = 1,
-    SAInternetConnectionStatusConnectionWifi,
-    SAInternetConnectionStatusConnectionWWAN,
-    SAInternetConnectionStatusConnectionUnkown
-};
-
-
-@protocol SAInternetChangeStatusDelegate <NSObject>
-
-- (void)internetHasBeenConnected;
-- (void)internetWasInterrupted;
-
-@end
-
-
 @interface SANetworkManager : NSObject
-
-@property (nonatomic, assign) SAInternetConnectionStatus connectionStatus;
-
-- (instancetype)initWithDelegate:(id<SAInternetChangeStatusDelegate>)delegate;
-- (BOOL)networkConnected;
-- (void)serverHasErrorWithType:(SAInternetErrorType)type;
-
-#pragma mark - DELETE data
 
 #pragma mark - GET data
 
@@ -58,7 +25,5 @@ typedef NS_OPTIONS(NSUInteger, SAInternetConnectionStatus)
            withParams:(NSDictionary *)params
       complitionBlock:(void (^)(id searchedObj))complitionBlock
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure;
-
-#pragma mark - POST requests
 
 @end

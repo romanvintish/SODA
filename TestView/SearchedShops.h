@@ -11,8 +11,8 @@
 
 @interface SearchedShops : NSObject <EKMappingProtocol>
 
-@property (nonatomic, copy) NSString* descriptions;
-@property (nonatomic, copy) NSString* image;
-@property (nonatomic, copy) NSString* username;
+@property (nonatomic, strong) NSString* descriptions;
+@property (nonatomic, strong) NSString* image;
+@property (nonatomic, strong) NSString* username;
 
 @end

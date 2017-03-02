@@ -10,8 +10,7 @@
 
 @implementation IntrosCellModel
 
-+(EKObjectMapping *)objectMapping
-{
++(EKObjectMapping *)objectMapping {
     return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
         [mapping mapPropertiesFromDictionary:@{
                                                @"shopPicture" : @"shopPicture",
@@ -28,8 +27,7 @@
 
 @implementation ProductsIntros
 
-+(EKObjectMapping *)objectMapping
-{
++(EKObjectMapping *)objectMapping {
     return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
         [mapping mapPropertiesFromDictionary:@{
                                                @"description" : @"descriptions",
@@ -46,8 +44,7 @@
 
 @implementation ShopInfoIntros
 
-+(EKObjectMapping *)objectMapping
-{
++(EKObjectMapping *)objectMapping {
     return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
         [mapping mapPropertiesFromDictionary:@{
                                                @"realName" : @"realName",

@@ -15,12 +15,6 @@
 #import "SearchedProducts.h"
 #import "SearchedShops.h"
 
-NSString *const kSABaseURL = @"http://2fair.jellyworkz.com/public/";
-NSString *const kSARequestObserverKeyConnectionStatus = @"connectionStatus";
-NSString *const kSARequestObserverKeyErrorStatus = @"serverError";
-NSString *const kSARequestObserverParamKeyOld = @"old";
-NSString *const kSARequestObserverParamKeyNew = @"new";
-
 typedef enum NSString
 {
     kSARequestTypePost,
@@ -35,134 +29,30 @@ NSString * const kSARequestTypeToString[] =
     [kSARequestTypeDELETE] = @"DELETE",
 };
 
+NSString *const kSABaseURL = @"http://2fair.jellyworkz.com/public/";
 
 @interface SANetworkManager ()
 
 @property (nonatomic, strong) AFHTTPSessionManager *manager;
-@property (nonatomic, weak) id<SAInternetChangeStatusDelegate>delegate;
-@property (nonatomic, assign) SAInternetErrorType serverError;
 
 @end
 
-
 @implementation SANetworkManager
 
-- (void)dealloc
-{
-    [self removeObserver:self forKeyPath:kSARequestObserverKeyConnectionStatus];
-    [self removeObserver:self forKeyPath:kSARequestObserverKeyErrorStatus];
-}
-
-- (instancetype)initWithDelegate:(id<SAInternetChangeStatusDelegate>)delegate
-{
-    if (self = [self init]) {
-        self.delegate = delegate;
-    }
-    return self;
-}
-
-- (instancetype)init
-{
+- (instancetype)init {
     if (self = [super init]) {
-        self.serverError = SAInternetErrorTypeNotError;
-        self.connectionStatus = SAInternetConnectionStatusConnectionUnkown;
         self.manager = [AFHTTPSessionManager manager];
         self.manager.responseSerializer.acceptableContentTypes = [NSSet setWithObjects:@"text/html", @"application/json", nil];
-        [self setObservers];
         [[AFNetworkReachabilityManager sharedManager] startMonitoring];
     }
-    [self checkConnected];
     return self;
 }
 
-- (void)setObservers
-{
-    [self addObserver:self forKeyPath:kSARequestObserverKeyConnectionStatus options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
-    [self addObserver:self forKeyPath:kSARequestObserverKeyErrorStatus options:NSKeyValueObservingOptionNew | NSKeyValueObservingOptionOld context:nil];
-}
-
-- (void)checkConnected
-{
-    self.connectionStatus = [self connectionStatus];
-    [[AFNetworkReachabilityManager sharedManager] setReachabilityStatusChangeBlock:^(AFNetworkReachabilityStatus status) {
-        switch (status) {
-            case AFNetworkReachabilityStatusNotReachable:
-                NSLog(@"No Internet Connection");
-                self.connectionStatus = SAInternetConnectionStatusNotConnection;
-                break;
-            case AFNetworkReachabilityStatusReachableViaWiFi:
-                NSLog(@"WIFI");
-                self.connectionStatus = SAInternetConnectionStatusConnectionWifi;
-                break;
-            case AFNetworkReachabilityStatusReachableViaWWAN:
-                NSLog(@"3G");
-                self.connectionStatus = SAInternetConnectionStatusConnectionWWAN;
-                break;
-            default:
-                NSLog(@"Unkown network status");
-                self.connectionStatus = SAInternetConnectionStatusConnectionUnkown;
-                break;
-        }
-    }];
-}
-
-- (void)observeValueForKeyPath:(nullable NSString *)keyPath ofObject:(nullable id)object change:(nullable NSDictionary<NSKeyValueChangeKey, id> *)change context:(nullable void *)context
-{
-    if ([keyPath isEqualToString:kSARequestObserverKeyConnectionStatus]) {
-        if ([[change objectForKey:kSARequestObserverParamKeyOld] integerValue] == SAInternetConnectionStatusNotConnection ||
-            [[change objectForKey:kSARequestObserverParamKeyOld] integerValue] == SAInternetConnectionStatusConnectionUnkown) {
-            if ([[change objectForKey:kSARequestObserverParamKeyNew] integerValue] == SAInternetConnectionStatusConnectionWifi ||
-                [[change objectForKey:kSARequestObserverParamKeyNew] integerValue] == SAInternetConnectionStatusConnectionWWAN) {
-                if ([self.delegate respondsToSelector:@selector(internetHasBeenConnected)]) {
-                    [self.delegate performSelector:@selector(internetHasBeenConnected)];
-                }
-            }
-        } else if ([[change objectForKey:kSARequestObserverParamKeyNew] integerValue] == SAInternetConnectionStatusNotConnection) {
-            if ([self.delegate respondsToSelector:@selector(internetWasInterrupted)]) {
-                [self.delegate performSelector:@selector(internetWasInterrupted)];
-            }
-        }
-    } else if ([keyPath isEqualToString:kSARequestObserverKeyErrorStatus]) {
-        if ([[change objectForKey:kSARequestObserverParamKeyOld] integerValue] == SAInternetErrorTypeNotError) {
-            if ([[change objectForKey:kSARequestObserverParamKeyNew] integerValue] == SAInternetErrorTypeLostConnection | [[change objectForKey:kSARequestObserverParamKeyNew] integerValue] == SAInternetErrorTypeServerError | [[change objectForKey:kSARequestObserverParamKeyNew] integerValue] ==  SAInternetErrorTypeEmptyData) {
-                [self serverHasErrorWithType:self.serverError];
-            }
-        }
-    }
-}
-
-- (void)serverHasErrorWithType:(SAInternetErrorType)type
-{
-    NSString *title = @"Error";
-    NSString *message;
-    
-    if (type == SAInternetErrorTypeLostConnection) {
-        message = @"Check the Internet connection";
-    } else if (type == SAInternetErrorTypeServerError) {
-        message = @"Server error";
-    }
-    
-    [UIAlertController alertControllerWithTitle:title message:message preferredStyle:UIAlertControllerStyleAlert];
-    self.serverError = SAInternetErrorTypeNotError;
-}
-
-- (BOOL)networkConnected
-{
-    [self checkConnected];
-    if (self.connectionStatus == SAInternetConnectionStatusConnectionWifi ||
-        self.connectionStatus == SAInternetConnectionStatusConnectionWWAN) {
-        return YES;
-    }
-    return NO;
-}
-
-#pragma mark - DELETE
 #pragma mark - GET
 
-- (void)fetchShopsWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block
-{
+- (void)fetchShopsWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block {
     NSString *urlSearchWithName = [NSString stringWithFormat:@"%@/user/%@/data/activityFeed&minId=%ld&maxId=%ld",kSABaseURL,userId, (long)start ,(long)end];
-
+    [self.manager.requestSerializer setTimeoutInterval:3.0];
     [self.manager GET:urlSearchWithName
       parameters:nil
         progress:nil
@@ -188,8 +78,7 @@ NSString * const kSARequestTypeToString[] =
     }];
 }
 
-- (void)fetchShopsForIntrosWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block
-{
+- (void)fetchShopsForIntrosWithID:(NSString*)userId withStart:(NSInteger)start withEnd:(NSInteger)end withCompletion:(void (^)(id obj, NSError *err))block {
     NSString *urlSearchWithName = [NSString stringWithFormat:@"%@/user/%@/data/activityFeed&minId=%ld&maxId=%ld",kSABaseURL,userId, (long)start ,(long)end];
     
     [self.manager GET:urlSearchWithName
@@ -214,8 +103,7 @@ NSString * const kSARequestTypeToString[] =
               }];
 }
 
-- (void)fetchNearlyShopsWithCordinate:(CLLocationCoordinate2D)coordinate andRadius:(CGFloat)radius withCompletion:(void (^)(id obj, NSError *err))block
-{
+- (void)fetchNearlyShopsWithCordinate:(CLLocationCoordinate2D)coordinate andRadius:(CGFloat)radius withCompletion:(void (^)(id obj, NSError *err))block {
     NSDictionary *parameters = @{
                                                                      @"long"    :   [NSNumber numberWithDouble:coordinate.longitude],
                                                                      @"lat"     :   [NSNumber numberWithDouble:coordinate.latitude],
@@ -252,7 +140,7 @@ NSString * const kSARequestTypeToString[] =
               }];
 }
 
-- (void)getPassion:(void (^)(id obj, NSError *err))complitionBlock{
+- (void)getPassion:(void (^)(id obj, NSError *err))complitionBlock {
     NSString *urlSearchWithName = [NSString stringWithFormat:@"%@/user/data/outhData",kSABaseURL];
     
     [self.manager GET:urlSearchWithName parameters:nil progress:^(NSProgress * _Nonnull downloadProgress) {
@@ -282,8 +170,6 @@ NSString * const kSARequestTypeToString[] =
       complitionBlock:(void (^)(id searchedObj))complitionBlock
               failure:(void (^)(NSURLSessionDataTask *task, NSError *error))failure {
     NSString *urlSearchWithName = [NSString stringWithFormat:@"%@user/%@/data/search",kSABaseURL,userId];
-
-    //self.manager.responseSerializer = [AFJSONResponseSerializer serializerWithReadingOptions:NSJSONReadingAllowFragments];
     
     [self.manager GET:urlSearchWithName
            parameters:params
@@ -335,7 +221,5 @@ NSString * const kSARequestTypeToString[] =
                   }
               }];
 }
-
-#pragma mark - POST
 
 @end

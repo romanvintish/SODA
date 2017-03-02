@@ -10,36 +10,36 @@
 #import <SDWebImage/UIImageView+WebCache.h>
 #import <AFNetworking/AFNetworking.h>
 
+NSString *const kFullLikeImageNameIntros = @"FullLike.png";
+
 @interface IntrosTableViewCell()
 
-@property (strong, nonatomic) IBOutlet UIButton *likeButton;
-@property (strong, nonatomic) IBOutlet UIImageView *userPhoto;
-@property (strong, nonatomic) IBOutlet UIImageView *touchedUserPhoto;
-@property (strong, nonatomic) IBOutlet UIImageView *friendPhoto;
-@property (strong, nonatomic) IBOutlet UIImageView *touchedFriendPhoto;
-@property (strong, nonatomic) IBOutlet UILabel *countMessageLabel;
-@property (strong, nonatomic) IBOutlet UILabel *dateLabel;;
+@property (weak, nonatomic) IBOutlet UIButton *likeButton;
+@property (weak, nonatomic) IBOutlet UIImageView *userPhoto;
+@property (weak, nonatomic) IBOutlet UIImageView *touchedUserPhoto;
+@property (weak, nonatomic) IBOutlet UIImageView *friendPhoto;
+@property (weak, nonatomic) IBOutlet UIImageView *touchedFriendPhoto;
+@property (weak, nonatomic) IBOutlet UILabel *countMessageLabel;
+@property (weak, nonatomic) IBOutlet UILabel *dateLabel;;
+@property (weak, nonatomic) IBOutlet UILabel *userNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *friendNameLabel;
+@property (weak, nonatomic) IBOutlet UILabel *messageTextLabel;
 
 @end
 
 @implementation IntrosTableViewCell
 
-- (void)awakeFromNib
-{
+- (void)awakeFromNib {
     [super awakeFromNib];
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
+- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
 }
 
-
 #pragma mark - Setting
 
-
-- (void)setCellWithModel:(IntrosCellModel *)model
-{
+- (void)setCellWithModel:(IntrosCellModel *)model {
     [self addGestureRecognizer];
     
     NSInteger likecount = [[model.products lastObject] LikedCount];
@@ -54,24 +54,21 @@
     [self addAttributeToLabels];
 
     if (model.followed > 0) {
-        [self.likeButton setImage:[UIImage imageNamed:@"FullLike.png"] forState:UIControlStateNormal];
+        [self.likeButton setImage:[UIImage imageNamed:kFullLikeImageNameIntros] forState:UIControlStateNormal];
     }
 }
 
--(void)addAttributeToLabels
-{
+-(void)addAttributeToLabels {
     NSAttributedString *nameAttributedString = [[NSAttributedString alloc] initWithString:self.userNameLabel.text
                                                                                attributes:@{
-                                                                                            NSKernAttributeName : @(2.0f)
+                                                                                            NSKernAttributeName : @(kKernAttributeForName)
                                                                                             }];
     self.userNameLabel.attributedText = nameAttributedString;
-    NSString *frname = self.friendNameLabel.text;
-    NSLog(@"%@", frname);
     
     if (self.friendNameLabel.text != nil) {
         NSAttributedString *askAttributedString = [[NSAttributedString alloc] initWithString:self.friendNameLabel.text
                                                                                   attributes:@{
-                                                                                               NSKernAttributeName : @(2.0f)
+                                                                                               NSKernAttributeName : @(kKernAttributeForAsk)
                                                                                                }];
         self.friendNameLabel.attributedText = askAttributedString;
     }
@@ -81,8 +78,7 @@
     [self.messageTextLabel setPreferredMaxLayoutWidth:194];
 }
 
--(void)addGestureRecognizer
-{
+-(void)addGestureRecognizer {
     UITapGestureRecognizer *tapRecognizer = [[UITapGestureRecognizer alloc]
                                              initWithTarget:self action:@selector(userPhotoTouched:)];
     [tapRecognizer setNumberOfTouchesRequired:1];
@@ -116,35 +112,28 @@
 
 #pragma mark - Action
 
-
--(void)userPhotoTouched:(id) sender
-{
+-(void)userPhotoTouched:(id) sender {
     return;
 }
 
--(void)friendPhotoTouched:(id) sender
-{
+-(void)friendPhotoTouched:(id) sender {
     return;
 }
 
--(void)userNameLabelTouched:(id) sender
-{
+-(void)userNameLabelTouched:(id) sender {
     return;
 }
 
--(void)friendNameLabelTouched:(id) sender
-{
+-(void)friendNameLabelTouched:(id) sender {
     return;
 }
 
--(void)messageTextLabelTouched:(id) sender
-{
+-(void)messageTextLabelTouched:(id) sender {
     return;
 }
 
-- (IBAction)likeProfile:(id)sender
-{
-    [self.likeButton setImage:[UIImage imageNamed:@"FullLike.png"] forState:UIControlStateNormal];
+- (IBAction)likeProfile:(id)sender {
+    [self.likeButton setImage:[UIImage imageNamed:kFullLikeImageNameIntros] forState:UIControlStateNormal];
 }
 
 @end

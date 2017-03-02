@@ -9,11 +9,15 @@
 #import "SearchPopupViewController.h"
 #import "SADataManager.h"
 
+NSString *const kMinId = @"0";
+NSString *const kMaxId = @"30";
+
 @interface SearchPopupViewController ()<UIPickerViewDataSource, UIPickerViewDelegate>
 
-@property (strong, nonatomic) IBOutlet UIPickerView *pickerView;
+@property (weak, nonatomic) IBOutlet UIPickerView *pickerView;
+@property (weak, nonatomic) IBOutlet UIView *blurView;
+
 @property (nonatomic, strong) NSMutableArray *categories;
-@property (strong, nonatomic) IBOutlet UIView *blurView;
 @property (nonatomic, strong) NSString *selectedCategory;
 
 @end
@@ -47,46 +51,40 @@
     [self.blurView addGestureRecognizer:tap];
 }
 
--(void)dismissView{
+-(void)dismissView {
     [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-}
-
-- (void)viewDidAppear:(BOOL)animated {
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
-// returns the number of 'columns' to display.
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView{
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView *)pickerView {
     return 1;
 }
 
-// returns the # of rows in each component..
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component{
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component {
     if (self.categories != nil) {
         return self.categories.count;
     }
     return 0;
 }
 
-- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component{
+- (nullable NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component {
     if (self.categories != nil) {
     return [[self.categories objectAtIndex:row] valueForKey:@"passionTitle"];
     }
     return nil;
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component{
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component {
     self.selectedCategory = [[[self.categories objectAtIndex:row] valueForKey:@"sortParam"] stringValue] ;
 }
 
 - (IBAction)doneButtonTaped:(id)sender {
     [[SADataManager sharedManager] searchInTheCategory:self.selectedCategory
-                                             withMinId:@"0"
-                                              andMaxId:@"30"
+                                             withMinId:kMinId
+                                              andMaxId:kMaxId
                                        complitionBlock:^(id searchedObj) {
                                            if ([self.delegate respondsToSelector:@selector(controllerReturnData:)]) {
                                                [self.delegate controllerReturnData:searchedObj];
@@ -95,14 +93,14 @@
                                                [self.delegate controllerReturnCategory:self.selectedCategory];
                                            }
                                            [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    }
+                                       }
                                                failure:^(NSURLSessionDataTask *task, NSError *error) {
                                             [self.presentingViewController dismissViewControllerAnimated:YES completion:nil];
-    }];
+                                               }];
     
     [[SADataManager sharedManager] searchShopsInTheCategory:self.selectedCategory
-                                             withMinId:@"0"
-                                              andMaxId:@"30"
+                                             withMinId:kMinId
+                                              andMaxId:kMaxId
                                        complitionBlock:^(id searchedObj) {
                                            if ([self.shopDelegate respondsToSelector:@selector(controllerReturnData:)]) {
                                                [self.shopDelegate controllerReturnData:searchedObj];
@@ -112,7 +110,6 @@
                                            }
                                        }
                                                failure:nil];
-
 }
 
 @end

@@ -13,9 +13,14 @@
 
 #define METERS_PER_MILE 1609.344
 
+CGFloat const kRadius = 20;
+NSString *const kShopOnMapModellIdentifier = @"ShopOnMapModell";
+CGFloat const kTrackOffset = 8000;
+CGFloat const kFirstLocationRegion = 6000;
+
 @interface MapViewController () <CLLocationManagerDelegate, ShopOnMapModellDelegate>
 
-@property (strong, nonatomic) IBOutlet MKMapView *map;
+@property (weak, nonatomic) IBOutlet MKMapView *map;
 @property (nonatomic, retain) CLLocationManager *locationManager;
 @property (nonatomic, strong) MKPolylineRenderer *wayLine;
 
@@ -34,14 +39,13 @@
         [[self locationManager] requestWhenInUseAuthorization];
     }
     [[self locationManager] startUpdatingLocation];
-
 }
 
 - (IBAction)burgerButtonTapped:(id)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"logoButtonTaped" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLogoButtonTapedNotificationName object:self];
 }
 
--(void)setTrackWithEndPoint:(CLLocationCoordinate2D)endPointCoordinate{
+-(void)setTrackWithEndPoint:(CLLocationCoordinate2D)endPointCoordinate {
     MKPlacemark *splace = [[MKPlacemark alloc] initWithCoordinate:self.map.userLocation.coordinate];
     MKMapItem *sitem =[[MKMapItem alloc] initWithPlacemark:splace];
     
@@ -57,13 +61,14 @@
     [direction calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse * _Nullable response, NSError * _Nullable error) {
         if (response != nil) {
             [self.map addOverlay:[response.routes[0] polyline] level:MKOverlayLevelAboveRoads];
-            [self.map setRegion:MKCoordinateRegionForMapRect([[response.routes[0] polyline] boundingMapRect]) animated:YES];
+            MKMapRect rect = [[response.routes[0] polyline] boundingMapRect];
+            MKMapRect regionRect = MKMapRectMake(rect.origin.x-kTrackOffset/2, rect.origin.y-kTrackOffset/2, rect.size.width+kTrackOffset, rect.size.height+kTrackOffset);
+            [self.map setRegion:MKCoordinateRegionForMapRect(regionRect) animated:YES];
         }
     }];
 }
 
-- (MKOverlayRenderer*)mapView:(MKMapView*)mapView rendererForOverlay:(id <MKOverlay>)overlay
-{
+- (MKOverlayRenderer*)mapView:(MKMapView*)mapView rendererForOverlay:(id <MKOverlay>)overlay {
     [mapView removeOverlay:self.wayLine.overlay];
     self.wayLine = [[MKPolylineRenderer alloc] initWithOverlay:overlay];
     self.wayLine.strokeColor = [UIColor blueColor];
@@ -71,14 +76,14 @@
     return self.wayLine;
 }
 
--(void)dealloc{
+-(void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (nullable MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation{
+- (nullable MKAnnotationView *)mapView:(MKMapView *)mapView viewForAnnotation:(id <MKAnnotation>)annotation {
     if ([annotation isKindOfClass:[ShopOnMapModell class]]) {
         ShopOnMapModell *myLocation = (ShopOnMapModell*)annotation;
-        MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:@"ShopOnMapModell"];
+        MKAnnotationView *annotationView = [mapView dequeueReusableAnnotationViewWithIdentifier:kShopOnMapModellIdentifier];
         
         if (annotationView == nil)
             annotationView = myLocation.annotationView;
@@ -89,36 +94,23 @@
     else return nil;
 }
 
-- (void)mapView:(MKMapView *)mapView didSelectAnnotationView:(MKAnnotationView *)view{
-    
-}
-
 #pragma mark - Map view delegate
 
 - (void)mapView:(MKMapView *)mapView didUpdateUserLocation:(MKUserLocation *)userLocation {
-    
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
         CLLocationCoordinate2D coord = self.map.userLocation.location.coordinate;
-        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coord, 200, 200);
+        MKCoordinateRegion region = MKCoordinateRegionMakeWithDistance(coord, kFirstLocationRegion, kFirstLocationRegion);
         [self.map setRegion:region];
     });
 
-    CGFloat radius = 20;
-    [[SADataManager sharedManager] fetchNearlyShopsWithCordinate:userLocation.coordinate andRadius:radius  withCompletion:^(id obj, NSError *err) {
+    [[SADataManager sharedManager] fetchNearlyShopsWithCordinate:userLocation.coordinate andRadius:kRadius  withCompletion:^(id obj, NSError *err) {
         for (ShopOnMapModell *shop in obj) {
             shop.delegate = self;
             [self.map addAnnotation:shop];
         }
     }];
     
-}
-
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
 }
 
 @end

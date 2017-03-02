@@ -7,7 +7,14 @@
 //
 
 #import <Foundation/Foundation.h>
+#import "SingleCellModell.h"
+#import "IntrosCellModel.h"
 
 @interface SADataSource : NSObject
+
+- (void)fetchCachedShopsWithWithCompletion:(void (^)(id obj, NSError *err))block;
+- (void)placeShop:(SingleCellModell *)shop toCacheWithWithCompletion:(void (^)(NSError *err))block;
+- (void)fetchCachedIntrosShopsWithWithCompletion:(void (^)(id obj, NSError *err))block;
+- (void)placeIntrosShop:(IntrosCellModel *)shop toCacheWithWithCompletion:(void (^)(NSError *err))block;
 
 @end

@@ -8,6 +8,10 @@
 
 #import "SlideMenuViewController.h"
 
+NSString *const kFirstSegueName = @"firstRow";
+NSString *const kSecondSegueName = @"secondRow";
+NSString *const kThirdSegueName = @"thirdRow";
+
 @interface SlideMenuViewController ()
 
 @end
@@ -18,33 +22,31 @@
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self
                                              selector:@selector(openLeftMenu)
-                                                 name:@"logoButtonTaped"
+                                                 name:kLogoButtonTapedNotificationName
                                                object:nil];
 }
 
--(void)dealloc{
+-(void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Burger menu
 
-- (NSString *)segueIdentifierForIndexPathInLeftMenu:(NSIndexPath *)indexPath
-{
+- (NSString *)segueIdentifierForIndexPathInLeftMenu:(NSIndexPath *)indexPath {
     NSString *identifier ;
     switch (indexPath.row) {
         case 0:
-            identifier = @"firstRow";
+            identifier = kFirstSegueName;
             break;
         case 1:
-            identifier = @"secondRow";
+            identifier = kSecondSegueName;
             break;
         case 2:
-            identifier = @"thirdRow";
+            identifier = kThirdSegueName;
             break;
     }
     
@@ -52,11 +54,16 @@
 }
 
 - (UIViewAnimationOptions) openAnimationCurve {
-    return UIViewAnimationOptionCurveEaseOut;
+    return UIViewAnimationOptionCurveEaseInOut;
 }
 
 - (UIViewAnimationOptions) closeAnimationCurve {
-    return UIViewAnimationOptionCurveEaseOut;
+    return UIViewAnimationOptionCurveEaseInOut;
+}
+
+- (BOOL)deepnessForLeftMenu
+{
+    return YES;
 }
 
 @end

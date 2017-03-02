@@ -11,9 +11,8 @@
 
 @interface SingleCollectionViewCell : UICollectionViewCell
 
-@property (strong, nonatomic) IBOutlet UIView *rightBottomSeparator;
-@property (strong, nonatomic) IBOutlet UIView *leftBottomSeparator;
-@property (nonatomic) CGFloat height;
+@property (weak, nonatomic) IBOutlet UIView *rightBottomSeparator;
+@property (weak, nonatomic) IBOutlet UIView *leftBottomSeparator;
 
 - (void)setCellWithModel:(Products *)model;
 

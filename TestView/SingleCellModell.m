@@ -10,8 +10,7 @@
 
 @implementation SingleCellModell
 
-+(EKObjectMapping *)objectMapping
-{
++(EKObjectMapping *)objectMapping {
     return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
         [mapping hasMany:[Products class] forKeyPath:@"products"];
         [mapping hasOne:[ShopInfo class] forKeyPath:@"SellersInfo"];
@@ -23,8 +22,7 @@
 
 @implementation Products
 
-+(EKObjectMapping *)objectMapping
-{
++(EKObjectMapping *)objectMapping {
     return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
         [mapping mapPropertiesFromDictionary:@{
                                                @"description" : @"descriptions",
@@ -39,8 +37,7 @@
 
 @implementation ShopInfo
 
-+(EKObjectMapping *)objectMapping
-{
++(EKObjectMapping *)objectMapping {
     return [EKObjectMapping mappingForClass:self withBlock:^(EKObjectMapping *mapping) {
         [mapping mapPropertiesFromDictionary:@{
                                                @"realName" : @"realName",

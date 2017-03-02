@@ -7,22 +7,22 @@
 //
 
 #import "SADataManager.h"
+#import "SANetworkManager.h"
+#import "SADataSource.h"
 
 NSString *const kSAUserID = @"2233855952";
 
-@interface SADataManager () <SAInternetChangeStatusDelegate>
+@interface SADataManager ()
 
 @property (nonatomic, strong, readwrite) SADataSource *dataSource;
 @property (nonatomic, strong, readwrite) SANetworkManager *requestManager;
 @property (nonatomic, strong) NSString *token;
-@property (nonatomic, assign) BOOL connectionDetected;
 
 @end
 
 @implementation SADataManager
 
-+ (SADataManager *)sharedManager
-{
++ (SADataManager *)sharedManager {
     static SADataManager *dataManager = nil;
     static dispatch_once_t onceToken;
     dispatch_once(&onceToken, ^{
@@ -33,79 +33,62 @@ NSString *const kSAUserID = @"2233855952";
     return dataManager;
 }
 
-- (id)init
-{
+- (id)init {
     self = [super init];
     if (self) {
         self.dataSource = [[SADataSource alloc] init];
-        self.requestManager = [[SANetworkManager alloc] initWithDelegate:self];
-        self.connectionDetected = NO;
+        self.requestManager = [[SANetworkManager alloc] init];
     }
     return self;
 }
 
-- (BOOL)internetWasDetected
-{
-    return self.connectionDetected;
-}
-
-
-#pragma mark - <SAInternetChangeStatusDelegate>
-
-
-- (void)internetHasBeenConnected
-{
-    self.connectionDetected = YES;
-}
-
-- (void)internetWasInterrupted
-{
-    self.connectionDetected = YES;
-    [self.requestManager serverHasErrorWithType:SAInternetErrorTypeLostConnection];
-}
-
-- (void)downloadShopCollectionsWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block{
+- (void)downloadShopCollectionsWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block {
         [self.requestManager fetchShopsWithID:kSAUserID withStart:start withEnd:end withCompletion:^(id obj, NSError *err) {
             block(obj,err);}];
 }
 
-- (void)downloadShopCollectionsForIntrosWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))block{
-    if (self.connectionDetected) {
+#pragma mark - NetworkManager
+
+- (void)downloadShopCollectionsForIntrosWithStart:(NSInteger)start withEnd:(NSInteger)end WithCompletion:(void (^)(id obj, NSError *err))bloc {
         [self.requestManager fetchShopsForIntrosWithID:kSAUserID withStart:start withEnd:end withCompletion:^(id obj, NSError *err) {
-            block(obj,err);}];
-    } else {
-        if (block) {
-            NSError *err = [[NSError alloc] init];
-            block(nil,err);
-        }
-    }
+            if (!err) {
+                if (bloc) {
+                    bloc(obj,nil);
+                }
+            } else {
+                if (bloc) {
+                    bloc(nil,err);
+                }
+            }
+        }];
 }
 
-- (void)fetchNearlyShopsWithCordinate:(CLLocationCoordinate2D)coordinate andRadius:(CGFloat)radius withCompletion:(void (^)(id obj, NSError *err))block{
-    if (self.connectionDetected) {
+- (void)fetchNearlyShopsWithCordinate:(CLLocationCoordinate2D)coordinate andRadius:(CGFloat)radius withCompletion:(void (^)(id obj, NSError *err))block {
         [self.requestManager fetchNearlyShopsWithCordinate:coordinate andRadius:radius withCompletion:^(id obj, NSError *err) {
-            block(obj,err);}];
-    } else {
-        if (block) {
-            NSError *err = [[NSError alloc] init];
-            block(nil,err);
-        }
-    }
+            if (!err) {
+                if (block) {
+                    block(obj,nil);
+                }
+            } else {
+                if (block) {
+                    block(nil,err);
+                }
+            }
+        }];
 }
 
-- (void)getPassion:(void (^)(id obj, NSError *err))complitionBlock{
-    if (self.connectionDetected) {
+- (void)getPassion:(void (^)(id obj, NSError *err))complitionBlock {
         [self.requestManager getPassion:^(id obj, NSError *err) {
-            complitionBlock(obj,err);
-             }];
-    } else {
-        if (complitionBlock) {
-            NSError *err = [[NSError alloc] init];
-            complitionBlock(nil,err);
-        }
-    }
-    
-
+            if (!err) {
+                if (complitionBlock) {
+                    complitionBlock(obj,nil);
+                }
+            } else {
+                if (complitionBlock) {
+                complitionBlock(nil,err);
+                }
+            }
+        }];
 }
 
 - (void)searchInTheCategory:(NSString *)category
@@ -125,13 +108,7 @@ NSString *const kSAUserID = @"2233855952";
                                  @"address"     :   @"",
                                  };
 
-    if (self.connectionDetected) {
-        [self.requestManager searchForUser:kSAUserID withParams:parameters complitionBlock:complitionBlock failure:failure];
-    } else {
-        if (failure) {
-            failure(nil,nil);
-        }
-    }
+    [self.requestManager searchForUser:kSAUserID withParams:parameters complitionBlock:complitionBlock failure:failure];
 }
 
 - (void)searchShopsInTheCategory:(NSString *)category
@@ -150,14 +127,34 @@ NSString *const kSAUserID = @"2233855952";
                                  @"zipCode"     :   @"",
                                  @"address"     :   @"",
                                  };
-    
-    if (self.connectionDetected) {
+
         [self.requestManager searchShopsForUser:kSAUserID withParams:parameters complitionBlock:complitionBlock failure:failure];
-    } else {
-        if (failure) {
-            failure(nil,nil);
-        }
-    }
+}
+
+#pragma mark - DataSource
+
+- (void)fetchCachedShopsWithWithCompletion:(void (^)(id obj, NSError *err))block {
+    [self.dataSource fetchCachedShopsWithWithCompletion:^(id obj, NSError *err) {
+        block(obj,err);
+    }];
+}
+
+- (void)placeShop:(SingleCellModell *)shop toCacheWithWithCompletion:(void (^)(NSError *err))block {
+    [self.dataSource placeShop:shop toCacheWithWithCompletion:^(NSError *err) {
+        block(err);
+    }];
+}
+
+- (void)fetchCachedIntrosShopsWithWithCompletion:(void (^)(id obj, NSError *err))block {
+    [self.dataSource fetchCachedIntrosShopsWithWithCompletion:^(id obj, NSError *err) {
+        block(obj,err);
+    }];
+}
+
+- (void)placeIntrosShop:(IntrosCellModel *)shop toCacheWithWithCompletion:(void (^)(NSError *err))block {
+    [self.dataSource placeIntrosShop:shop toCacheWithWithCompletion:^(NSError *err) {
+        block(err);
+    }];
 }
 
 @end

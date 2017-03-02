@@ -13,14 +13,23 @@
 #import "MatchesTableViewController.h"
 #import "SearchPopupViewController.h"
 
+#define X_FOR_SCROLL(button,scrolitem) button.frame.origin.x + (button.frame.size.width - scrolitem.frame.size.width)/2
+
+NSString *const kSinglesCollectionViewIdentifier = @"SinglesCollectionViewController";
+
+NSString *const kIntrosTableViewIdentifier = @"IntrosTableViewController";
+NSString *const kMatchesTableViewIdentifier = @"MatchesTableViewController";
+NSString *const kPageViewControllerIdentifier = @"PageViewController";
+NSString *const kSearchControllerIdentifier = @"SearchController";
+
 @interface PeoplesViewController () <UIPageViewControllerDataSource, UIPageViewControllerDelegate>
 
 @property (strong, nonatomic) UIPageViewController *pageViewController;
-@property (strong, nonatomic) IBOutlet UIView *pageView;
-@property (strong, nonatomic) IBOutlet UIView *scrollItem;
-@property (strong, nonatomic) IBOutlet UIButton *singleButton;
-@property (strong, nonatomic) IBOutlet UIButton *introsButton;
-@property (strong, nonatomic) IBOutlet UIButton *matchesButton;
+@property (weak, nonatomic) IBOutlet UIView *pageView;
+@property (weak, nonatomic) IBOutlet UIView *scrollItem;
+@property (weak, nonatomic) IBOutlet UIButton *singleButton;
+@property (weak, nonatomic) IBOutlet UIButton *introsButton;
+@property (weak, nonatomic) IBOutlet UIButton *matchesButton;
 @property (strong, nonatomic) NSMutableArray *myViewControllers;
 @property NSInteger curentPageIndex;
 
@@ -28,17 +37,16 @@
 
 @implementation PeoplesViewController
 
-- (void)viewDidLoad
-{
+- (void)viewDidLoad {
     [super viewDidLoad];
     
-    SinglesCollectionViewController *singles = [self.storyboard instantiateViewControllerWithIdentifier:@"SinglesCollectionViewController"];
-    IntrosTableViewController *intros = [self.storyboard instantiateViewControllerWithIdentifier:@"IntrosTableViewController"];
-    MatchesTableViewController  *matches = [self.storyboard instantiateViewControllerWithIdentifier:@"MatchesTableViewController"];
+    SinglesCollectionViewController *singles = [self.storyboard instantiateViewControllerWithIdentifier:kSinglesCollectionViewIdentifier];
+    IntrosTableViewController *intros = [self.storyboard instantiateViewControllerWithIdentifier:kIntrosTableViewIdentifier];
+    MatchesTableViewController  *matches = [self.storyboard instantiateViewControllerWithIdentifier:kMatchesTableViewIdentifier];
     
     self.myViewControllers = [@[singles,intros,matches]mutableCopy];
     
-    self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:@"PageViewController"];
+    self.pageViewController = [self.storyboard instantiateViewControllerWithIdentifier:kPageViewControllerIdentifier];
     self.pageViewController.dataSource = self;
     self.pageViewController.delegate = self;
     
@@ -54,26 +62,28 @@
     [self addChildViewController:self.pageViewController];
     [self.pageView addSubview:self.pageViewController.view];
     [self.pageViewController didMoveToParentViewController:self];
+    
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(startSearching)
+                                                 name:kPushNotificationTapedNotificationName
+                                               object:nil];
 }
 
--(void)dealloc{
+-(void)dealloc {
     [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
-- (void)didReceiveMemoryWarning
-{
+- (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
 }
-
 
 #pragma mark - Actions
 
 - (IBAction)logoButtonTaped:(id)sender {
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"logoButtonTaped" object:self];
+    [[NSNotificationCenter defaultCenter] postNotificationName:kLogoButtonTapedNotificationName object:self];
 }
 
-- (IBAction)singlesTaped:(id)sender
-{
+- (IBAction)singlesTaped:(id)sender {
     NSInteger index = 0;
     [self animateScrollingItem:index];
     SinglesCollectionViewController *contentViewController = [self.myViewControllers objectAtIndex:index];
@@ -95,8 +105,12 @@
 }
 
 - (IBAction)searchButtonTaped:(id)sender {
+    [self startSearching];
+}
+
+- (void)startSearching {
     static BOOL isFirstTap = YES;
-    SearchPopupViewController *searchController = [self.storyboard instantiateViewControllerWithIdentifier:@"SearchController"];
+    SearchPopupViewController *searchController = [self.storyboard instantiateViewControllerWithIdentifier:kSearchControllerIdentifier];
     searchController.delegate = [self.myViewControllers objectAtIndex:0];
     searchController.shopDelegate = [self.myViewControllers objectAtIndex:1];
     searchController.providesPresentationContextTransitionStyle = YES;
@@ -105,7 +119,7 @@
     [searchController setModalPresentationStyle:UIModalPresentationOverCurrentContext];
     
     if (!isFirstTap) {
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"searchButtonSecondTaped" object:self];
+        [[NSNotificationCenter defaultCenter] postNotificationName:kSearchButtonSecondTapedNotificationName object:self];
     }
     if (isFirstTap) {
         isFirstTap =NO;
@@ -113,8 +127,7 @@
     [self.navigationController presentViewController:searchController animated:YES completion:nil];
 }
 
-- (IBAction)introsTaped:(id)sender
-{
+- (IBAction)introsTaped:(id)sender {
     NSInteger index = 1;
     [self animateScrollingItem:index];
     IntrosTableViewController *contentViewController = [self.myViewControllers objectAtIndex:index];
@@ -135,8 +148,7 @@
                                      completion:nil];
 }
 
-- (IBAction)matchesTaped:(id)sender
-{
+- (IBAction)matchesTaped:(id)sender {
     NSInteger index = 2;
     [self animateScrollingItem:index];
     MatchesTableViewController *contentViewController = [self.myViewControllers objectAtIndex:index];
@@ -157,15 +169,14 @@
                                      completion:nil];
 }
 
--(void)animateScrollingItem:(NSInteger)index
-{
+-(void)animateScrollingItem:(NSInteger)index {
     [UIView beginAnimations:nil context:nil];
     [UIView setAnimationDuration:.3];
     [UIView setAnimationBeginsFromCurrentState:TRUE];
     
     switch (index) {
         case 0:{
-            [self.scrollItem setFrame:CGRectMake(self.singleButton.frame.origin.x + (self.singleButton.frame.size.width - self.scrollItem.frame.size.width)/2,
+            [self.scrollItem setFrame:CGRectMake(X_FOR_SCROLL(self.singleButton,self.scrollItem),
                                                  self.scrollItem.frame.origin.y,
                                                  self.scrollItem.frame.size.width,
                                                  self.scrollItem.frame.size.height)];
@@ -173,7 +184,7 @@
         }
             
         case 1:{
-            [self.scrollItem setFrame:CGRectMake(self.introsButton.frame.origin.x + (self.introsButton.frame.size.width - self.scrollItem.frame.size.width)/2,
+            [self.scrollItem setFrame:CGRectMake(X_FOR_SCROLL(self.introsButton,self.scrollItem),
                                                  self.scrollItem.frame.origin.y,
                                                  self.scrollItem.frame.size.width,
                                                  self.scrollItem.frame.size.height)];
@@ -181,7 +192,7 @@
         }
             
         case 2:{
-            [self.scrollItem setFrame:CGRectMake(self.matchesButton.frame.origin.x + (self.matchesButton.frame.size.width - self.scrollItem.frame.size.width)/2,
+            [self.scrollItem setFrame:CGRectMake(X_FOR_SCROLL(self.matchesButton,self.scrollItem),
                                                  self.scrollItem.frame.origin.y,
                                                  self.scrollItem.frame.size.width,
                                                  self.scrollItem.frame.size.height)];
@@ -199,8 +210,7 @@
 #pragma mark - Page View Controller Data Source
 
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController
-{
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerBeforeViewController:(UIViewController *)viewController {
     if ((self.curentPageIndex == 0) || (self.curentPageIndex == NSNotFound)) {
         return nil;
     }
@@ -208,8 +218,7 @@
     return [self.myViewControllers objectAtIndex:self.curentPageIndex -1];
 }
 
-- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController
-{
+- (UIViewController *)pageViewController:(UIPageViewController *)pageViewController viewControllerAfterViewController:(UIViewController *)viewController {
     if (self.curentPageIndex == NSNotFound) {
         return nil;
     }
@@ -225,8 +234,7 @@
 #pragma mark - Page View Controller Delegate
 
 
-- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed
-{
+- (void)pageViewController:(UIPageViewController *)pageViewController didFinishAnimating:(BOOL)finished previousViewControllers:(NSArray<UIViewController *> *)previousViewControllers transitionCompleted:(BOOL)completed {
     self.curentPageIndex = [self.myViewControllers indexOfObject:[pageViewController.viewControllers lastObject]];
     [self animateScrollingItem: self.curentPageIndex];
 }

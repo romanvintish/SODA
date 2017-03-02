@@ -11,9 +11,9 @@
 
 @interface SearchedProducts : NSObject <EKMappingProtocol>
 
-@property (nonatomic, copy) NSString* descriptions;
-@property (nonatomic, copy) NSString* image;
-@property (nonatomic, copy) NSString* name;
+@property (nonatomic, strong) NSString* descriptions;
+@property (nonatomic, strong) NSString* image;
+@property (nonatomic, strong) NSString* name;
 @property (nonatomic) BOOL is_liked;
 
 @end

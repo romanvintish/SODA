@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="11759" systemVersion="15G1217" minimumToolsVersion="Automatic" sourceLanguage="Objective-C" userDefinedModelVersionIdentifier="">
+    <entity name="CDProducts" representedClassName="CDProducts" syncable="YES" codeGenerationType="class">
+        <attribute name="descriptions" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="image" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="is_liked" optional="YES" attributeType="Boolean" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="likedCount" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <relationship name="shop" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDShop" inverseName="products" inverseEntity="CDShop" syncable="YES"/>
+    </entity>
+    <entity name="CDShop" representedClassName="CDShop" syncable="YES" codeGenerationType="class">
+        <attribute name="followed" optional="YES" attributeType="Integer 16" defaultValueString="0" usesScalarValueType="YES" syncable="YES"/>
+        <attribute name="shopPicture" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="products" optional="YES" toMany="YES" deletionRule="Nullify" destinationEntity="CDProducts" inverseName="shop" inverseEntity="CDProducts" syncable="YES"/>
+        <relationship name="shopInfo" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDShopInfo" inverseName="shop" inverseEntity="CDShopInfo" syncable="YES"/>
+    </entity>
+    <entity name="CDShopInfo" representedClassName="CDShopInfo" syncable="YES" codeGenerationType="class">
+        <attribute name="country" optional="YES" attributeType="String" syncable="YES"/>
+        <attribute name="realName" optional="YES" attributeType="String" syncable="YES"/>
+        <relationship name="shop" optional="YES" maxCount="1" deletionRule="Nullify" destinationEntity="CDShop" inverseName="shopInfo" inverseEntity="CDShop" syncable="YES"/>
+    </entity>
+    <elements>
+        <element name="CDProducts" positionX="-207" positionY="-73" width="128" height="118"/>
+        <element name="CDShop" positionX="-407" positionY="-4" width="128" height="28"/>
+        <element name="CDShopInfo" positionX="-200" positionY="90" width="128" height="88"/>
+    </elements>
+</model>
